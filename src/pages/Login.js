@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Text, Input, Button } from "../elements";
-import { setCookie } from '../shared/Cookie'
+import { useDispatch } from 'react-redux';
+import { actionCreators as userActions }  from '../redux/modules/user'
 
 const Container = styled.form`
   flex-direction: column;
@@ -25,6 +26,7 @@ const Login = (Route) => {
   const [password, setPassword] = useState("");
   const [ID, setID] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
 
   const handleIDChange = e => {
     const data = e.target.value;
@@ -36,12 +38,8 @@ const Login = (Route) => {
     setPassword(data);
   }
 
-  const handleLoginPress = ({ ID, password }) => {
-    setCookie("user_id", ID)
-    setCookie("user_pw", password)
-    setID("")
-    setPassword("")
-    console.log("로그인했어요!")
+  const handleLoginPress = () => {
+    dispatch(userActions.loginAction({user_name: 'ydm2790'}))
   }
 
   return (
@@ -65,8 +63,8 @@ const Login = (Route) => {
         />
         <ErrorText>{ errorMessage }</ErrorText>
         <Button
-          _onClick={() => {
-            handleLoginPress({ID, password})}}
+          _onClick={({ ID }) => {
+            handleLoginPress({ID})}}
           text="로그인하기"
         />
       </Container>

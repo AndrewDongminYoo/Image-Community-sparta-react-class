@@ -23,6 +23,15 @@ const initialState = {
   is_login: false,
 }
 
+// middleware actions
+const loginAction = (user) => {
+  return function (dispatch, getState, {history}){
+    console.log(history);
+    dispatch(logIn(user));
+    history.push('/')
+  }
+}
+
 // handleActions(reducerMap{}, defaultState[, options])
 // The second parameter defaultState is required, and is
 // used when undefined is passed to the reducer.
@@ -53,6 +62,7 @@ const actionCreators = {
   logIn,
   getUser,
   logOut,
+  loginAction,
 };
 
 export { actionCreators };

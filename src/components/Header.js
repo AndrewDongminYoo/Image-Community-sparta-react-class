@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Grid, Text, Button } from "../elements";
-import { getCookie, deleteCookie } from '../shared/Cookie';
+import { useSelector, useDispatch } from "react-redux";
+import { actionCreators as userActions } from "../redux/modules/user";
 
 const GrayButton = {
     backgroundColor:"#C4C4C4",
@@ -11,16 +12,10 @@ const GrayButton = {
 
 const Header = (props) => {
 
-    const [isLogIn, setIsLogIn] = useState(false)
+    const dispatch = useDispatch();
+    const is_login = useSelector((state) => state.user.is_login);
 
-    useEffect(()=> {
-
-        let cookie = getCookie("user_id");
-        setIsLogIn(cookie ? true : false)
-
-    }, [])
-
-    return isLogIn
+    return is_login
     ? (
         <React.Fragment>
             <Grid is_flex padding="4px 16px">
@@ -34,9 +29,7 @@ const Header = (props) => {
                         containerStyle={GrayButton}
                         text="로그아웃"
                         _onClick={() => {
-                        deleteCookie("user_id")
-                        deleteCookie("user_pw")
-                        setIsLogIn(false)
+                            dispatch(userActions.logOut())
                     }}
                     />
                 </Grid>
