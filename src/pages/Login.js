@@ -18,28 +18,25 @@ const ErrorText = styled.p`
   height: 10px;
   line-height: 10px;
   margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
   color: red;
 `;
 
 const Login = (Route) => {
 
+  const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [ID, setID] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const dispatch = useDispatch();
 
-  const handleIDChange = e => {
-    const data = e.target.value;
-    setID(data);
-  }
-
-  const handlePasswordChange = e => {
-    const data = e.target.value;
-    setPassword(data);
-  }
-
   const handleLoginPress = () => {
-    dispatch(userActions.loginAction({user_name: 'ydm2790'}))
+    if (Email && password) {
+      dispatch(userActions.loginFB(Email, password))
+    } else {
+      setErrorMessage("모두 입력해주세요.")
+    }
   }
 
   return (
@@ -47,24 +44,24 @@ const Login = (Route) => {
       <Container>
         <Text size="32px" bold>로그인</Text>
         <Input
-          label="아이디"
-          value={ID}
-          _onChange={(change) => handleIDChange(change)}
-          placeholder="아이디를 입력하세요."
+          label="이메일"
+          value={Email}
+          _onChange={(e) => setEmail(e.target.value)}
+          placeholder="이메일을 입력하세요."
           returnKeyType="next"
         />
         <Input
           label="비밀번호"
           value={password}
-          _onChange={(change) => handlePasswordChange(change)}
+          _onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호를 입력하세요."
           returnKeyType="done"
           isPassword
         />
         <ErrorText>{ errorMessage }</ErrorText>
         <Button
-          _onClick={({ ID }) => {
-            handleLoginPress({ID})}}
+          _onClick={({ Email, password }) => {
+            handleLoginPress({ Email, password })}}
           text="로그인하기"
         />
       </Container>

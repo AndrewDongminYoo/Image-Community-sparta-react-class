@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Text, Input, Button } from "../elements";
+import { useDispatch } from 'react-redux';
+import { actionCreators as userActions }  from '../redux/modules/user'
+
 
 const Container = styled.form`
   flex-direction: column;
@@ -10,47 +13,45 @@ const Container = styled.form`
   padding: 20px;
 `;
 
-const ErrorText = styled.p`
-  align-items: flex-start;
-  width: 100%;
-  height: 10px;
-  line-height: 10px;
-  margin-bottom: 10px;
-  color: red;
-`;
-
 const Signup = (Route) => {
 
-  const [ID, setID] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [nickName, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch()
 
-  console.log(Route)
+  const handleSignupPress = () => {
+    if (password !== rePassword) {
+      return;
+    }
+    if (email && password && rePassword && nickName) {
+      dispatch(userActions.signupFB(email, password, nickName))
+    }
+  }
 
   return (
     <React.Fragment>
       <Container>
         <Text size="32px" bold>회원가입</Text>
         <Input
-          label="아이디"
-          value={ID}
-          _onChange={setID}
-          placeholder="아이디를 입력하세요."
+          label="이메일"
+          value={email}
+          _onChange={(e) => setEmail(e.target.value)}
+          placeholder="이메일을 입력하세요."
           returnKeyType="next"
         />
         <Input
           label="닉네임"
-          value={nickname}
-          _onChange={setNickname}
+          value={nickName}
+          _onChange={(e) => setNickname(e.target.value)}
           placeholder="닉네임을 입력하세요."
           returnKeyType="next"
         />
         <Input
           label="비밀번호"
           value={password}
-          _onChange={setPassword}
+          _onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호를 입력하세요."
           returnKeyType="next"
           isPassword
@@ -58,16 +59,15 @@ const Signup = (Route) => {
         <Input
           label="비밀번호 확인"
           value={rePassword}
-          _onChange={setRePassword}
+          _onChange={(e) => setRePassword(e.target.value)}
           placeholder="비밀번호를 다시 입력하세요."
           returnKeyType="done"
           isPassword
         />
-        <ErrorText>{ errorMessage }</ErrorText>
         <Button
-          _onClick={() => {
+          _onClick={(email, password, rePassword, nickName) => {
             console.log("회원가입!")
-            setErrorMessage("")
+            handleSignupPress({email, password, rePassword, nickName})
           }}
           text="회원가입하기"
         />

@@ -22,15 +22,7 @@ const initialState = {
 };
 
 // middleware actions
-const loginAction = (user) => {
-  return function (dispatch, getState, { history }) {
-    console.log(history);
-    dispatch(setUser(user));
-    history.push("/");
-  };
-};
-
-const signupFB = (email, password, user_name) => {
+const signupFB = (email, password, nickName) => {
   return function (dispatch, getState, {history}){
 
     auth
@@ -38,12 +30,12 @@ const signupFB = (email, password, user_name) => {
       .then((user) => {
         console.log(user);
         auth.currentUser.updateProfile({
-          displayName: user_name,
+          displayName: nickName,
         }).then(()=>{
           dispatch(
             setUser(
               {
-                user_name: user_name,
+                user_name: nickName,
                 id: email,
                 user_profile: '',
                 emailVerified: false,
@@ -61,6 +53,30 @@ const signupFB = (email, password, user_name) => {
 
       });
 
+  }
+}
+
+const loginFB = (email, password) => {
+  return function (dispatch, getState, {history}){
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        dispatch(setUser({
+          id: email,
+          nickName: user.nickName,
+          user_profile: user.user_profile,
+          emailVerified: user.emailVerified,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber,
+        }
+      )
+    );
+    history.push('/')
+  })
+  .catch((error) => {
+    console.log(error)
+  });
   }
 }
 
@@ -91,7 +107,7 @@ export default handleActions(
 const actionCreators = {
   logOut,
   getUser,
-  loginAction,
+  loginFB,
   signupFB,
 };
 
