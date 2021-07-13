@@ -79,7 +79,10 @@ export default handleActions(
         draft.user = null;
         draft.is_login = false;
       }),
-    [GET_USER]: (state, action) => produce(state, (draft) => {}),
+    [GET_USER]: (state, action) =>
+      produce(state, (draft) => {
+
+      }),
   },
   initialState
 );
