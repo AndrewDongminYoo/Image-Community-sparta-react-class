@@ -13,19 +13,45 @@ const Container = styled.form`
   padding: 20px;
 `;
 
+const ErrorText = styled.p`
+  align-items: flex-start;
+  width: 100%;
+  height: 10px;
+  line-height: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: red;
+`;
+
 const Signup = (Route) => {
 
   const [email, setEmail] = useState("");
   const [nickName, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const dispatch = useDispatch()
 
   const handleSignupPress = () => {
-    if (password !== rePassword) {
-      return;
+
+    const checkEmail = (email) => {
+      const regex =/([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      return (!!email && regex.test(email));
     }
-    if (email && password && rePassword && nickName) {
+
+    if (!(email && password && rePassword && nickName)) {
+      setErrorMessage("모든 값을 입력해주세요.");
+    } else if (password.length < 8 && password.length > 14) {
+      setErrorMessage("비밀번호는 8자 이상 14자 이하여야 합니다.")
+    } else if (!( checkEmail(email) )) {
+      setErrorMessage("이메일 형식이 올바르지 않습니다.")
+    } else if (email.length < 12 && email.length > 32) {
+      setErrorMessage("이메일 길이를 확인해주세요.")
+    } else if (password !== rePassword) {
+      setErrorMessage("비밀번호 체크를 확인해주세요.")
+    } else {
       dispatch(userActions.signupFB(email, password, nickName))
     }
   }
@@ -64,9 +90,9 @@ const Signup = (Route) => {
           returnKeyType="done"
           isPassword
         />
+        <ErrorText>{ errorMessage }</ErrorText>
         <Button
           _onClick={(email, password, rePassword, nickName) => {
-            console.log("회원가입!")
             handleSignupPress({email, password, rePassword, nickName})
           }}
           text="회원가입하기"

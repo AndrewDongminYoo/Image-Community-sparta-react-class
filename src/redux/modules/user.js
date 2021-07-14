@@ -2,7 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 
 import { setCookie, deleteCookie } from "../../shared/Cookie";
-
+import firebase from "firebase/app";
 import { auth } from "../../shared/Firebase";
 
 // actions
@@ -24,29 +24,24 @@ const initialState = {
 // middleware actions
 const signupFB = (email, password, nickName) => {
   return function (dispatch, getState, {history}){
-
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log(user);
         auth.currentUser.updateProfile({
           displayName: nickName,
         }).then(()=>{
           dispatch(
             setUser(
               {
-                user_name: nickName,
-                id: email,
-                user_profile: '',
-                emailVerified: false,
-                photoURL: "",
-                phoneNumber: "",
+                displayName: nickName,
+                email: email,
+                uid: user.uid,
               }
             )
           );
           history.push('/');
         }).catch((error) => {
-          console.log(error);
+          console.error(error.message);
         });
       })
       .catch((error) => {
@@ -59,24 +54,53 @@ const signupFB = (email, password, nickName) => {
 const loginFB = (email, password) => {
   return function (dispatch, getState, {history}){
     auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        dispatch(setUser({
-          id: email,
-          nickName: user.nickName,
-          user_profile: user.user_profile,
-          emailVerified: user.emailVerified,
-          photoURL: user.photoURL,
-          phoneNumber: user.phoneNumber,
-        }
-      )
-    );
-    history.push('/')
-  })
-  .catch((error) => {
-    console.log(error)
-  });
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then((response) => {
+        auth
+          .signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            dispatch(
+              setUser({
+              email: user.email,
+              displayName: user.displayName,
+              uid: user.uid,
+            }
+          )
+        );
+        history.push('/')
+      }).catch((error) => {
+        console.error(error.message)
+      });
+    });
+  };
+};
+
+const loginCheckFB = () => {
+  return function (dispatch, getState, {history}){
+    auth.onIdTokenChanged((user) => {
+      if (user) {
+        console.log(user)
+        dispatch(
+          setUser({
+            email: user.email,
+            uid: user.uid,
+            displayName: user.displayName,
+          })
+        );
+      } else {
+        dispatch(logOut());
+      }
+    })
+  }
+}
+
+const logoutFB = () => {
+  return function (dispatch, getState, {history}) {
+    auth.signOut().then(() => {
+      dispatch(logOut());
+      history.replace('/');
+    })
   }
 }
 
@@ -109,6 +133,8 @@ const actionCreators = {
   getUser,
   loginFB,
   signupFB,
+  loginCheckFB,
+  logoutFB,
 };
 
 export { actionCreators };
