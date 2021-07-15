@@ -34,6 +34,7 @@ const Header = (props) => {
                         text="로그아웃"
                         _onClick={() => {
                             dispatch(userActions.logOut())
+                            sessionStorage.removeItem(_session_key)
                     }}
                     />
                 </Grid>

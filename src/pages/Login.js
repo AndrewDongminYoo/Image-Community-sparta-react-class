@@ -32,8 +32,14 @@ const Login = (Route) => {
   const dispatch = useDispatch();
 
   const handleLoginPress = () => {
+    const checkEmail = (email) => {
+      const regex =/([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      return (!!email && regex.test(email));
+    }
     if (Email && password) {
       dispatch(userActions.loginFB(Email, password))
+    } else if (!(checkEmail(Email))) {
+      setErrorMessage("이메일을 확인해주세요.")
     } else {
       setErrorMessage("모두 입력해주세요.")
     }

@@ -38,8 +38,8 @@ const Signup = (Route) => {
 
     const checkEmail = (email) => {
       const regex =/([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-      return (!!email && regex.test(email));
-    }
+        return (!!email && regex.test(email));
+      }
 
     if (!(email && password && rePassword && nickName)) {
       setErrorMessage("모든 값을 입력해주세요.");
