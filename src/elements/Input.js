@@ -30,10 +30,11 @@ const Input = ({
   label,
   value,
   _onChange,
+  _onSubmit,
   placeholder,
   isPassword,
   maxLength,
-  returnKeyType
+  returnKeyType,
 }) => {
 
   const [isFocused, setIsFocused] = useState(false);
@@ -57,6 +58,7 @@ const Input = ({
         autoCapitalize="false"
         autoCorrect="false"
         type={isPassword ? "password" : "text"}
+        onSubmit={_onSubmit}
       />
     </Container>
   )

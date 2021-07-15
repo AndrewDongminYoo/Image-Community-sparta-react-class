@@ -80,7 +80,6 @@ const loginCheckFB = () => {
   return function (dispatch, getState, {history}){
     auth.onIdTokenChanged((user) => {
       if (user) {
-        console.log(user)
         dispatch(
           setUser({
             email: user.email,
@@ -99,7 +98,7 @@ const logoutFB = () => {
   return function (dispatch, getState, {history}) {
     auth.signOut().then(() => {
       dispatch(logOut());
-      history.replace('/login');
+      history.replace('/');
     })
   }
 }

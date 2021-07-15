@@ -33,15 +33,15 @@ const Login = (Route) => {
 
   const handleLoginPress = () => {
     const checkEmail = (email) => {
-      const regex =/([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
       return (!!email && regex.test(email));
     }
-    if (Email && password) {
-      dispatch(userActions.loginFB(Email, password))
+    if (!(Email && password)) {
+      setErrorMessage("모두 입력해주세요.")
     } else if (!(checkEmail(Email))) {
       setErrorMessage("이메일을 확인해주세요.")
     } else {
-      setErrorMessage("모두 입력해주세요.")
+      dispatch(userActions.loginFB(Email, password))
     }
   }
 
@@ -63,6 +63,8 @@ const Login = (Route) => {
           placeholder="비밀번호를 입력하세요."
           returnKeyType="done"
           isPassword
+          _onSubmit={({ Email, password }) => {
+            handleLoginPress({ Email, password })}}
         />
         <ErrorText>{ errorMessage }</ErrorText>
         <Button
