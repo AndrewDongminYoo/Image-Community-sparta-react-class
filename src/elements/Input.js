@@ -19,27 +19,59 @@ const TextInput = styled.input`
   box-sizing: border-box;
   background-color: #fff;
   width: 100%;
+  height: 30px;
+  line-height: 30px;
   color: #000;
-  padding: 12px 30px 12px 10px;
+  padding: 6px 30px 6px 10px;
   font-size: 14px;
-  border: 1px solid ${({isFocused}) => isFocused ? "blue" : "gray" };
+  border: 1px solid ${({isFocused}) => isFocused ? "blue" : "transparent" };
   border-radius: 4px;
 `;
+
+const FileLabel = styled.label`
+  display: block;
+  width: 100%;
+  height: 30px;
+  background-color:#FFD8B2;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+`;
+
+const FilePick = styled.input`
+  margin: 8px;
+  display: none;
+`;
+
+const FileInput = (props) => {
+  const { label } = props
+  return (
+    <Container>
+      <FileLabel for="input-file">{ label }</FileLabel>
+      <FilePick type="file" id="input-file"/>
+    </Container>
+  )
+}
 
 const Input = ({
   label,
   value,
   _onChange,
   _onSubmit,
+  _onClick,
   placeholder,
   isPassword,
   maxLength,
   returnKeyType,
+  isFileUpload,
 }) => {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  return (
+  return isFileUpload ? (
+    <FileInput label={label} onClick={_onClick}/>
+  ) : (
     <Container>
       <InputLabel isFocused={isFocused}>
         { label }
@@ -59,6 +91,7 @@ const Input = ({
         autoCorrect="false"
         type={isPassword ? "password" : "text"}
         onSubmit={_onSubmit}
+        onKeyPress={(key) => key.key === 'Enter' ? _onSubmit() : null}
       />
     </Container>
   )

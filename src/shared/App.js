@@ -1,13 +1,15 @@
 import './App.css';
 import React, { useEffect } from "react";
 import Header from '../components/Header';
+import AddPost from '../elements/AddPost'
 import { ConnectedRouter } from 'connected-react-router'
 import { Route } from "react-router-dom";
 import { history } from '../redux/configureStore'
-import { PostList, Login, Signup } from "../pages";
+import { PostList, Login, Signup, PostWrite } from "../pages";
 import { useDispatch } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user'
 import { apiKey } from './Firebase';
+import Permit from './Permit';
 
 function App() {
 
@@ -28,6 +30,10 @@ function App() {
         <Route path="/" exact component={PostList}/>
         <Route path="/login" exact component={Login}/>
         <Route path="/signup" exact component={Signup}/>
+        <Route path="/upload" exact component={PostWrite}/>
+        <Permit>
+        <AddPost/>
+        </Permit>
       </ConnectedRouter>
     </React.Fragment>
   );

@@ -5,10 +5,11 @@ const BtnContainer = styled.div`
   box-sizing: border-box;
   border: none;
   display: block;
-  background-color: ${(isFilled) => isFilled ? 'black' : 'transparent'};
+  background-color: ${(props) => props.isFilled ? 'black' : 'transparent'};
+  border: ${(props) => props.isFilled ? 'none': '1px solid black' };
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 3px;
   width: 100%;
   padding: 12px 0;
 `;
@@ -17,7 +18,7 @@ const BtnText = styled.span`
   display: block;
   text-align: center;
   font-size: 12px;
-  color:  ${(isFilled) => isFilled ? 'white' : 'black'};
+  color: ${(props) => props.isFilled ? 'white' : 'black'};
 `;
 
 const Button = props => {

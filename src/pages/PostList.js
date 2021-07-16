@@ -1,10 +1,10 @@
 import React from 'react';
-import Post from '../components/Post'
+import PostDetail from './PostDetail'
 
 const PostList = (props) => {
   return (
     <React.Fragment>
-      <Post />
+      <PostDetail />
     </React.Fragment>
   )
 }

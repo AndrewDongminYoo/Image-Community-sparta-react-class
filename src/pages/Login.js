@@ -63,13 +63,13 @@ const Login = (Route) => {
           placeholder="비밀번호를 입력하세요."
           returnKeyType="done"
           isPassword
-          _onSubmit={({ Email, password }) => {
-            handleLoginPress({ Email, password })}}
+          _onSubmit={() => {
+            handleLoginPress()}}
         />
         <ErrorText>{ errorMessage }</ErrorText>
         <Button
-          _onClick={({ Email, password }) => {
-            handleLoginPress({ Email, password })}}
+          _onClick={() => {
+            handleLoginPress()}}
           text="로그인하기"
         />
       </Container>

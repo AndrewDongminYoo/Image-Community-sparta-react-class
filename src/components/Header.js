@@ -6,10 +6,12 @@ import { history } from '../redux/configureStore'
 import { apiKey } from '../shared/Firebase'
 
 const GrayButton = {
-    backgroundColor:"#C4C4C4",
+    backgroundColor:"#CBCBCB",
+    borderRadius: 3,
     width: 80,
-    height: 40,
-    marginLeft: 10
+    height: 36,
+    marginLeft: 10,
+    borderWidth: 0.7,
 }
 
 const Header = (props) => {
@@ -22,31 +24,31 @@ const Header = (props) => {
     return is_login && is_session
     ? (
         <React.Fragment>
-            <Grid is_flex padding="4px 16px">
-                <Grid>
-                    <Text margin="0px" size="24px" bold>헬로</Text>
+            <Grid is_flex padding="8px 16px" row>
+                <Grid row>
+                    <Text margin="0px" size="24px" bold>꼬스타</Text>
                 </Grid>
-                <Grid is_flex width="false">
-                    <Button containerStyle={GrayButton} text="내 정보" />
-                    <Button containerStyle={GrayButton} text="알림" />
+                <Grid is_flex row reverse>
                     <Button
                         containerStyle={GrayButton}
                         text="로그아웃"
                         _onClick={() => {
                             dispatch(userActions.logOut())
                             sessionStorage.removeItem(_session_key)
-                    }}
-                    />
+                    }}/>
+                    <Button containerStyle={GrayButton} text="알림" />
+                    <Button containerStyle={GrayButton} text="내 정보" />
+
                 </Grid>
             </Grid>
         </React.Fragment>
     ) : (
         <React.Fragment>
-            <Grid is_flex padding="4px 16px">
-                <Grid>
-                    <Text margin="0px" size="24px" bold>헬로</Text>
+            <Grid is_flex row padding="8px 16px">
+                <Grid is_flex row>
+                    <Text margin="0px" size="24px" bold>꼬리스타</Text>
                 </Grid>
-                <Grid is_flex width="false">
+                <Grid is_flex row reverse>
                     <Button
                         containerStyle={GrayButton}
                         text="로그인"

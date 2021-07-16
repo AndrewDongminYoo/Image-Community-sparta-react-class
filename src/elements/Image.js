@@ -2,13 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ImageCircle = styled.div`
-  --size: ${(props) => props.size}px;
-  width: var(--size);
-  height: var(--size);
-  border-radius: var(--size);
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
+  border-radius: ${(props) => props.size}px;
   background-image: url("${(props) => props.src}") ;
   background-size: cover;
-  margin: 4px;
+  margin: 4px 4px auto 4px;
 `;
 
 const AspectOuter = styled.div`
@@ -21,12 +20,21 @@ const AspectInner = styled.div`
   padding-top: 75%;
   overflow: hidden;
   background-image: url("${(props) => props.src}") ;
+  opacity: ${(props) => props.isDefaultImage ? 0.5 : 1 };
   background-size: cover;
+`;
+
+const TextOnImage = styled.a`
+  font-size: 28px;
+  font-weight: 900;
+  color: #ddd;
+  text-align: center;
+  vertical-align: center;
 `;
 
 const Image = (props) => {
 
-  const { shape, src, size } = props
+  const { shape, src, size, isDefaultImage } = props
 
   if (shape === 'circle') {
       return (
@@ -34,13 +42,25 @@ const Image = (props) => {
         <ImageCircle src={src} size={size}/>
       </React.Fragment>
     )
-  } else {
+  } else if (shape === 'rectangle') {
     return (
       <React.Fragment>
         <AspectOuter>
           <AspectInner src={src}/>
         </AspectOuter>
       </React.Fragment>
+    )
+  } else if (isDefaultImage) {
+    return (
+      <React.Fragment>
+        <AspectOuter>
+          <AspectInner src={src}>
+            <TextOnImage>
+              "사진 업로드하기"
+            </TextOnImage>
+          </AspectInner>
+        </AspectOuter>
+    </React.Fragment>
     )
   }
 

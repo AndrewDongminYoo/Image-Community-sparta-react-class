@@ -21,6 +21,28 @@ const initialState = {
   is_login: false,
 };
 
+const uploadImage = async uri => {
+  const blob = await new Promise((res, rej) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      res(xhr.response);
+    };
+    xhr.onerror = function (err) {
+      rej(new TypeError('Network request failed'));
+
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+  const user = auth.currentUser;
+  const ref = firebase.app.storage().ref(`/profile/${user.uid}/profile.png`);
+  const snapshot = await ref.put(blob, { contentType: 'image/png' });
+
+  blob.close();
+  return snapshot.ref.getDownloadURL();
+}
+
 // middleware actions
 const signupFB = (email, password, nickName) => {
   return function (dispatch, getState, {history}){
@@ -45,9 +67,9 @@ const signupFB = (email, password, nickName) => {
         });
       })
       .catch((error) => {
-
-      });
-
+        console.error(error.message)
+      }
+    );
   }
 }
 
@@ -134,6 +156,7 @@ const actionCreators = {
   signupFB,
   loginCheckFB,
   logoutFB,
+  uploadImage,
 };
 
 export { actionCreators };

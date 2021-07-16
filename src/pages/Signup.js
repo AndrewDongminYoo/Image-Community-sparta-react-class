@@ -89,11 +89,13 @@ const Signup = (Route) => {
           placeholder="비밀번호를 다시 입력하세요."
           returnKeyType="done"
           isPassword
+          _onSubmit={() => {
+            handleSignupPress()}}
         />
         <ErrorText>{ errorMessage }</ErrorText>
         <Button
-          _onClick={(email, password, rePassword, nickName) => {
-            handleSignupPress({email, password, rePassword, nickName})
+          _onClick={() => {
+            handleSignupPress()
           }}
           text="회원가입하기"
         />
