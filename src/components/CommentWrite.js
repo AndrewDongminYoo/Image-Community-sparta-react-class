@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import { Grid, Input } from "../elements";
 
 const Button = styled.input`
-  width: 50px;
-  height: 30px;
+
 `;
 
 const CommentWrite = () => {
