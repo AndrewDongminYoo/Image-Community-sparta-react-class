@@ -23,7 +23,7 @@ const BtnText = styled.span`
 
 const Button = props => {
 
-  const { containerStyle, _onClick, text, isFilled } = props;
+  const { containerStyle, _onClick, isFilled, text, children } = props;
 
   return (
     <BtnContainer
@@ -32,7 +32,7 @@ const Button = props => {
       style={containerStyle}
     >
       <BtnText isFilled={isFilled}>
-        { text }
+        { text || children }
       </BtnText>
     </BtnContainer>
   )

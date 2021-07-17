@@ -9,9 +9,9 @@ const SET_POST = "SET_POST";
 const DEL_POST = "DEL_POST";
 
 // action creators
-const addPost = createAction(ADD_POST, (user) => ({ user }));
-const setPost = createAction(SET_POST, (user) => ({ user }));
-const delPost = createAction(DEL_POST, (user) => ({ user }));
+const addPost = createAction(ADD_POST, (post) => ({ post }));
+const setPost = createAction(SET_POST, (post) => ({ post }));
+const delPost = createAction(DEL_POST, (post) => ({ post }));
 
 // initialState
 const initialPost = {
@@ -27,7 +27,7 @@ const initialPost = {
 }
 
 const initialState = {
-  list: [initialPost, ],
+  list: [],
 };
 
 const getPostFB = () => {
@@ -37,14 +37,24 @@ const getPostFB = () => {
       .get()
       .then((docs) => {
         let post_list = [];
+
         docs.forEach((doc) => {
-          const _post = doc.data()
-          const comments = firestore.collection(`post/${doc.id}/comments`)
-          comments.get().then((cmts) => {
-            cmts.forEach((cmt) => {
-              _post.comments.push(cmt.data())
-            })
-          })
+          const _post = {
+            id: doc.id,
+            comments: [],
+            ...doc.data()
+          }
+
+          // const comments = firestore.collection(`post/${doc.id}/comments`)
+          // comments.get().then((cmts) => {
+          //   cmts.forEach((cmt) => {
+          //     let comment = {
+          //       id: cmt.id,
+          //       ...cmt.data()
+          //     }
+          //     _post.comments.push(comment)
+          //   })
+          // })
           const post = {
             id: _post.id,
             user_info: {
@@ -59,7 +69,7 @@ const getPostFB = () => {
           }
           post_list.push(post)
         })
-        dispatch(setPost(post_list))
+        dispatch(setPost(post_list));
       })
   }
 }
@@ -69,11 +79,11 @@ export default handleActions(
   {
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.list = action.payload.post_list;
+
       }),
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
-
+        draft.list = action.payload.post;
       }),
     [DEL_POST]: (state, action) =>
       produce(state, (draft) => {

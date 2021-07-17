@@ -48,7 +48,7 @@ const FileInput = (props) => {
   const { label } = props
   return (
     <Container>
-      <FileLabel for="input-file">{ label }</FileLabel>
+      <FileLabel htmlFor="input-file">{ label }</FileLabel>
       <FilePick type="file" id="input-file"/>
     </Container>
   )
@@ -73,10 +73,11 @@ const Input = ({
     <FileInput label={label} onClick={_onClick}/>
   ) : (
     <Container>
-      <InputLabel isFocused={isFocused}>
+      <InputLabel htmlFor="input-text" isFocused={isFocused}>
         { label }
       </InputLabel>
       <TextInput
+        id="input-text"
         value={value}
         onChange={_onChange}
         onFocus={() => setIsFocused(true)}

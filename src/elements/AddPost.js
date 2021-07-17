@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import { history } from '../redux/configureStore';
 
 const BtnContainer = styled.div`
   box-sizing: border-box;
@@ -17,7 +18,7 @@ const BtnContainer = styled.div`
   line-height: 55px;
 `;
 
-const AddPost = ({ _onClick }) => {
+const AddPost = (props) => {
 
   const IconStyle = {
     fontSize: 26,
@@ -27,14 +28,13 @@ const AddPost = ({ _onClick }) => {
   }
 
   return (
-    <BtnContainer onClick={_onClick}>
+    <BtnContainer onClick={()=>{
+      history.push('/upload')}}
+    >
         <PlusCircleOutlined style={IconStyle} />
     </BtnContainer>
   )
 }
 
-AddPost.defaultProps = {
-  _onClick: () => {}
-}
 
 export default AddPost;

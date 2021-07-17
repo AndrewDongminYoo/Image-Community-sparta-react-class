@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { history } from '../redux/configureStore'
+import { useSelector, useDispatch } from 'react-redux';
 import { Text, Grid, Image, Button, TextArea, Input } from "../elements";
 
 const Container = styled.form`
@@ -25,7 +27,7 @@ const PostWrite = (Route) => {
 
   const [desc, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const is_login = useSelector((state) => state.user.is_login)
   const sample = "https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2F2018-12-23-03-55-59.jpg?alt=media"
   const [imgsrc, setImageSource] = useState(sample);
 
@@ -49,7 +51,23 @@ const PostWrite = (Route) => {
   // Input에 isFileUpload를 props로 넘기면 input type이
   // file로 변하고, 파일 업로드의 못생김을 display-block이 된
   // 라벨이 가려서 예쁘게 출력해줍니다. (라벨 텍스트 입력해야함)
-  return (
+  return !is_login ? (
+    <Grid margin="200px 0px" padding="16px" center>
+      <Text size="32px" bold>
+        잠깐!
+      </Text>
+      <Text size="16px">
+        로그인 후에만 글을 쓸 수 있어요!
+      </Text>
+      <Button
+        _onClick={() => {
+          history.replace("/login");
+        }}
+      >
+        로그인 하러가기
+      </Button>
+    </Grid>
+  ) : (
     <React.Fragment>
       <Container>
         <Text size="32px" bold>공유하기</Text>

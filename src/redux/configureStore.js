@@ -9,11 +9,13 @@ import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 // user 파일에서 default로 넘긴 handleActions를 User로 받는다.
 import User from "./modules/user";
+import Post from "./modules/post";
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   user: User,
+  post: Post,
   router: connectRouter(history),
 });
 

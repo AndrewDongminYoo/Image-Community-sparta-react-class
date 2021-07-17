@@ -32,7 +32,7 @@ function App() {
         <Route path="/signup" exact component={Signup}/>
         <Route path="/upload" exact component={PostWrite}/>
         <Permit>
-        <AddPost/>
+          <AddPost/>
         </Permit>
       </ConnectedRouter>
     </React.Fragment>

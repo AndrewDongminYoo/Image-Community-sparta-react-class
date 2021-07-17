@@ -13,11 +13,12 @@ const GridBox = styled.div`
   ${(props) => props.bcg ? `background-color: ${props.bcg};` : ""}
   ${(props) => props.is_flex ? `display: flex; align-items: center;` : ""}
   justify-content: center;
+  ${(props) => props.center ? `text-align: center;` : ""}
 `;
 
 const Grid = (props) => {
 
-  const {  is_flex, width, row, padding, reverse, paddingHorizontal, paddingVertical, margin, bcg, children } = props
+  const {  is_flex, width, row, padding, reverse, paddingHorizontal, paddingVertical, margin, bcg, children, center } = props
 
   return (
     <React.Fragment>
@@ -31,6 +32,7 @@ const Grid = (props) => {
         paddingVertical={paddingVertical}
         margin={margin}
         bcg={bcg}
+        center={center}
       >
         { children }
       </GridBox>
