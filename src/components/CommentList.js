@@ -3,12 +3,13 @@ import { Grid, Image, Text } from '../elements';
 import moment from 'moment';
 import 'moment/locale/ko';
 import { useSelector } from 'react-redux';
-import { actionCreators } from '../redux/modules/post';
+// eslint-disable-next-line
+import { actionCreators as postActions } from '../redux/modules/post';
 
 const getDateOrTime = ts => {
   return moment.unix(ts.seconds).fromNow();
 }
-
+// eslint-disable-next-line
 const CommentItem = ({cmt}) => {
 
   const { user_info, comment, insert_dt } = cmt
@@ -26,7 +27,7 @@ const CommentItem = ({cmt}) => {
 }
 
 const CommentList = id => {
-
+  // eslint-disable-next-line
   const post = useSelector((state) => state.post.list)
 
   return (

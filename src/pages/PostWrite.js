@@ -4,7 +4,7 @@ import { history } from '../redux/configureStore'
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, Grid, Image, Button, Input } from "../elements";
 // eslint-disable-next-line
-import { actionCreators as postActions }  from '../redux/modules/post'
+import { actionCreators as imageActions }  from '../redux/modules/image'
 
 const Container = styled.form`
   flex-direction: column;
@@ -33,19 +33,20 @@ const PostWrite = (Route) => {
   const preview = useSelector((state) => state.image.preview)
   // eslint-disable-next-line
   const dispatch = useDispatch()
-  const [img_url, setImageSource] = useState("https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2F2019-02-08-16-39-22.jpg?alt=media");
+  const [img_url, setImageSource] = useState();
 
   // 이 함수는 사진을 파이어스토어에 사용자의 uid명의 ref에 업로드하고 다시 다운받아 리턴(예정)
   const selectFile = (e) => {
     const reader = new FileReader();
     const file = e.target.files[0];
+    if (!file) return
     if (!file.type.startsWith('image/')) return
     // 파일 내용을 읽어옵니다.
     reader.readAsDataURL(file);
     // 읽기가 끝나면 발생하는 이벤트 핸들러예요! :)
     reader.onloadend = () => {
     // reader.result는 파일의 컨텐츠(내용물)입니다!
-      setImageSource(reader.result);
+      dispatch(imageActions.showPreview(reader.result));
     };
   }
   // 이 함수는 포스트 작성 버튼을 눌렀을때 실행될 함수!
@@ -83,7 +84,7 @@ const PostWrite = (Route) => {
       <Container>
         <Text size="32px" bold>공유하기</Text>
         <Grid>
-          <Image shape="rectangle" src={img_url}/>
+          <Image shape="rectangle" src={preview}/>
           <Input
             _onChange={selectFile}
             isFileUpload

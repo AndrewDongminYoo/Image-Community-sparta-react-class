@@ -7,7 +7,7 @@ const BtnContainer = styled.div`
   box-sizing: border-box;
   border: none;
   display: block;
-  position: absolute;
+  position: fixed;
   right: 16px;
   bottom: 32px;
   background-color: #FFD600;

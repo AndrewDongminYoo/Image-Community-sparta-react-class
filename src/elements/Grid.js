@@ -7,10 +7,8 @@ const GridBox = styled.div`
   box-sizing: border-box;
   flex-direction: ${(props) => !props.row ? "column" : "row"}${(props) => props.reverse ? "-reverse" : ""};
   ${(props) => props.padding ? `padding: ${props.padding};` : ""}
-  ${(props) => props.paddingVertical ? `padding-top: ${props.paddingVertical}; padding-bottom: ${props.paddingVertical};` : ""}
-  ${(props) => props.paddingHorizontal ? `padding-left: ${props.paddingHorizontal}; padding-right: ${props.paddingHorizontal};` : ""}
   ${(props) => props.margin ? `margin: ${props.margin};` : ""}
-  ${(props) => props.bcg ? `background-color: ${props.bcg};` : ""}
+  ${(props) => props.backgroundColor ? `background-color: ${props.backgroundColor};` : ""}
   ${(props) => props.is_flex ? `display: flex; align-items: center;` : ""}
   justify-content: center;
   ${(props) => props.center ? `text-align: center;` : ""}
@@ -18,7 +16,7 @@ const GridBox = styled.div`
 
 const Grid = (props) => {
 
-  const {  is_flex, width, row, padding, reverse, paddingHorizontal, paddingVertical, margin, bcg, children, center } = props
+  const {  is_flex, width, row, padding, reverse, margin, backgroundColor, children, center } = props
 
   return (
     <React.Fragment>
@@ -28,10 +26,8 @@ const Grid = (props) => {
         reverse={reverse}
         row={row}
         padding={padding}
-        paddingHorizontal={paddingHorizontal}
-        paddingVertical={paddingVertical}
         margin={margin}
-        bcg={bcg}
+        backgroundColor={backgroundColor}
         center={center}
       >
         { children }
@@ -47,7 +43,7 @@ Grid.defaultProps = {
   width: "100%",
   padding: false,
   margin: false,
-  bcg: false,
+  backgroundColor: false,
 }
 
 export default Grid;

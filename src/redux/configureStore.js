@@ -10,12 +10,14 @@ import { connectRouter } from "connected-react-router";
 // user 파일에서 default로 넘긴 handleActions를 User로 받는다.
 import User from "./modules/user";
 import Post from "./modules/post";
+import Image from './modules/image';
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   user: User,
   post: Post,
+  image: Image,
   router: connectRouter(history),
 });
 

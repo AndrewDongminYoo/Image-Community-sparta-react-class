@@ -22,17 +22,17 @@ const PostDetail = props => {
             <Text bold>{ user_info.user_name }</Text>
             <Text right>{getDateOrTime(insert_dt)}</Text>
         </Grid>
-        <Grid paddingHorizontal="12px">
+        <Grid padding="0px 12px">
           <Text>{contents}</Text>
         </Grid>
-        <Grid paddingVertical="10px">
+        <Grid padding="10px 0px">
           <Image shape="rectangle" src={image_url} />
         </Grid>
-        <Grid paddingHorizontal="12px">
+        <Grid padding="0px 12px">
           <Text bold>댓글 {comment_cnt}개</Text>
         </Grid>
-        <CommentList id={id}/>
-        <CommentWrite id={id}/>
+        {/* <CommentList id={id}/>
+        <CommentWrite id={id}/> */}
       </Grid>
     </React.Fragment>
   )
