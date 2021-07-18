@@ -11,8 +11,7 @@ const getDateOrTime = ts => {
 
 const PostDetail = props => {
 
-  const { id, user_info, image_url, contents, comment_cnt, insert_dt } = props
-  console.log(props)
+  const { user_info, image_url, contents, comment_cnt, insert_dt } = props
 
   return (
     <React.Fragment>

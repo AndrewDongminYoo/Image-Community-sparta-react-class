@@ -30,7 +30,7 @@ const uploadImageFB = image => {
       })
     }).catch((e)=>{
       console.error(e.message)
-      })
+    })
   }
 }
 
@@ -55,6 +55,7 @@ export default handleActions(
 
 // action creator export
 const actionCreators = {
+  isUploading,
   uploadImage,
   uploadImageFB,
   showPreview,

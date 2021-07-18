@@ -13,7 +13,8 @@ const PostList = (props) => {
     if (post_list.length === 0){
       dispatch(postActions.getPostFB())
     }
-  }, [dispatch, post_list])
+  // eslint-disable-next-line
+  }, [])
 
   return (
     <React.Fragment>

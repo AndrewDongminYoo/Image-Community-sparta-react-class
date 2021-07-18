@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { history } from '../redux/configureStore'
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, Grid, Image, Button, Input } from "../elements";
-// eslint-disable-next-line
+import { actionCreators as postActions }  from '../redux/modules/post'
 import { actionCreators as imageActions }  from '../redux/modules/image'
 
 const Container = styled.form`
@@ -31,32 +31,41 @@ const PostWrite = (Route) => {
   const [errorMessage, setErrorMessage] = useState("");
   const is_login = useSelector((state) => state.user.is_login)
   const preview = useSelector((state) => state.image.preview)
-  // eslint-disable-next-line
   const dispatch = useDispatch()
-  const [img_url, setImageSource] = useState();
 
-  // 이 함수는 사진을 파이어스토어에 사용자의 uid명의 ref에 업로드하고 다시 다운받아 리턴(예정)
+  // 사진 미리보기를 세팅하는 onChange 함수!
   const selectFile = (e) => {
     const reader = new FileReader();
     const file = e.target.files[0];
-    if (!file) return
-    if (!file.type.startsWith('image/')) return
-    // 파일 내용을 읽어옵니다.
+    console.log(file)
+    if (!file) {
+      console.log('File Open Error')
+      return
+    }
+    if (!file.type.startsWith('image/')) {
+      window.alert('이미지 파일만 업로드할 수 있어요ㅠ')
+      return
+    }
+    if (file.size > 52428800) {
+      window.alert('파일이 너무 크네요ㅠㅠ')
+      return
+    }
     reader.readAsDataURL(file);
-    // 읽기가 끝나면 발생하는 이벤트 핸들러예요! :)
     reader.onloadend = () => {
-    // reader.result는 파일의 컨텐츠(내용물)입니다!
       dispatch(imageActions.showPreview(reader.result));
     };
   }
   // 이 함수는 포스트 작성 버튼을 눌렀을때 실행될 함수!
-  const handlePostWritePress = () => {
-    if (!contents) {
+  const handlePostWritePress = async () => {
+    if (!preview) {
+      setErrorMessage("사진을 업로드해주세요~ 이미지파일만 가능!")
+    } else if (!contents) {
       setErrorMessage("어떤 사진인가요? 친구들에게 알려주세요.")
     } else {
-      const regex = /%2F([\W\w]+)\?alt=media/;
-      const file_name = regex.exec(img_url).pop();
-      alert(`파일명: ${file_name} \n글 내용: ${contents} \n업로드 성공!!!`)
+      await dispatch(postActions.addPostFB(contents));
+      await setErrorMessage('');
+      await dispatch(imageActions.showPreview(null));
+      await alert('업로드 성공!!!');
     }
   }
 
