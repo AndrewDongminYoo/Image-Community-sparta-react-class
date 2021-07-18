@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore'
-import { useSelector, useDispatch } from 'react-redux';
-import { Text, Grid, Image, Button, TextArea, Input } from "../elements";
+import { useDispatch, useSelector } from 'react-redux';
+import { Text, Grid, Image, Button, Input } from "../elements";
+// eslint-disable-next-line
+import { actionCreators as postActions }  from '../redux/modules/post'
 
 const Container = styled.form`
   flex-direction: column;
@@ -25,26 +27,35 @@ const ErrorText = styled.p`
 
 const PostWrite = (Route) => {
 
-  const [desc, setDescription] = useState("");
+  const [contents, setContents] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const is_login = useSelector((state) => state.user.is_login)
-  const sample = "https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2F2018-12-23-03-55-59.jpg?alt=media"
-  const [imgsrc, setImageSource] = useState(sample);
+  const preview = useSelector((state) => state.image.preview)
+  // eslint-disable-next-line
+  const dispatch = useDispatch()
+  const [img_url, setImageSource] = useState("https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2F2019-02-08-16-39-22.jpg?alt=media");
 
   // 이 함수는 사진을 파이어스토어에 사용자의 uid명의 ref에 업로드하고 다시 다운받아 리턴(예정)
-  const getImageUrlSource = (img) => {};
-
+  const selectFile = (e) => {
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    if (!file.type.startsWith('image/')) return
+    // 파일 내용을 읽어옵니다.
+    reader.readAsDataURL(file);
+    // 읽기가 끝나면 발생하는 이벤트 핸들러예요! :)
+    reader.onloadend = () => {
+    // reader.result는 파일의 컨텐츠(내용물)입니다!
+      setImageSource(reader.result);
+    };
+  }
   // 이 함수는 포스트 작성 버튼을 눌렀을때 실행될 함수!
   const handlePostWritePress = () => {
-    if (!desc) {
+    if (!contents) {
       setErrorMessage("어떤 사진인가요? 친구들에게 알려주세요.")
     } else {
       const regex = /%2F([\W\w]+)\?alt=media/;
-      const new_src = getImageUrlSource();
-      setImageSource(new_src)
-      const file_name = regex.exec(imgsrc).pop();
-      console.log(regex, file_name);
-      alert(`파일명: ${file_name} \n글 내용: ${desc} \n업로드 성공!!!`)
+      const file_name = regex.exec(img_url).pop();
+      alert(`파일명: ${file_name} \n글 내용: ${contents} \n업로드 성공!!!`)
     }
   }
 
@@ -72,19 +83,23 @@ const PostWrite = (Route) => {
       <Container>
         <Text size="32px" bold>공유하기</Text>
         <Grid>
-          <Image shape="rectangle" src={imgsrc}/>
-          <Input isFileUpload label="이 버튼을 눌러 일상을 공유하세요."/>
+          <Image shape="rectangle" src={img_url}/>
+          <Input
+            _onChange={selectFile}
+            isFileUpload
+            label="이 버튼을 눌러 일상을 공유하세요."
+          />
         </Grid>
-        <TextArea
-          _onChange={(e) => setDescription(e.target.value)}
+        <Input
+          numberOfLines={5}
+          value={contents}
+          _onChange={(e) => setContents(e.target.value)}
           placeholder="이 사진에 담긴 이야기를 해주세요."
           label="사진설명"
         />
         <ErrorText>{ errorMessage }</ErrorText>
         <Button
-          _onClick={() => {
-            handlePostWritePress()
-          }}
+          _onClick={handlePostWritePress}
           text="게시하기"
           isFilled={false}
         />
