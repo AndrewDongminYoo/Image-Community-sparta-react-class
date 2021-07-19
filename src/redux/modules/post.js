@@ -25,9 +25,44 @@ const initialPost = {
 
 const initialState = {
   list: [],
+  unread: 4,
 };
 
 const getPostFB = () => {
+  return function (dispatch, getState, {history}) {
+    const postDB = firestore.collection("post");
+    postDB
+      .get()
+      .then((docs) => {
+      let post_list = [];
+      docs.forEach((doc) => {
+        const _post = {
+          id: doc.id,
+          comments: [],
+          ...doc.data()
+        }
+        const post = {
+          id: _post.id,
+          user_info: {
+            user_name: _post.user_name,
+            user_profile: _post.user_profile,
+            user_uid: _post.user_uid,
+          },
+          contents: _post.contents,
+          insert_dt: _post.insert_dt,
+          comments: _post.comments,
+          image_url: _post.image_url,
+        }
+        post_list.push(post)
+      })
+      dispatch(setPost(post_list));
+    }).catch((error) => {
+      console.error(error.message)
+    })
+  }
+}
+
+const editPostFB = () => {
   return function (dispatch, getState, {history}) {
     const postDB = firestore.collection("post");
     postDB
