@@ -1,40 +1,34 @@
 import React from 'react';
-import { Grid, Image, Text } from '../elements';
+import { Grid } from '../elements';
 import CommentList from '../components/CommentList'
 import CommentWrite from '../components/CommentWrite'
-import moment from 'moment';
+import Post from '../components/Post';
 import 'moment/locale/ko';
-
-const getDateOrTime = ts => {
-  return moment.unix(ts.seconds).fromNow();
-}
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { actionCreators as postActions } from '../redux/modules/post'
 
 const PostDetail = props => {
 
-  const { user_info, image_url, contents, comment_cnt, insert_dt } = props
-
   return (
     <React.Fragment>
-      <Grid>
-        <Grid row is_flex={true} padding="12px">
-            <Image shape="circle" src={user_info.user_profile} />
-            <Text bold>{ user_info.user_name }</Text>
-            <Text right>{getDateOrTime(insert_dt)}</Text>
-        </Grid>
-        <Grid padding="0px 12px">
-          <Text>{contents}</Text>
-        </Grid>
-        <Grid padding="10px 0px">
-          <Image shape="rectangle" src={image_url} />
-        </Grid>
-        <Grid padding="0px 12px">
-          <Text bold>댓글 {comment_cnt}개</Text>
-        </Grid>
-        {/* <CommentList id={id}/>
-        <CommentWrite id={id}/> */}
+      <Grid >
+        <Post {...props} />
+        <CommentList id={props.id} />
+        <CommentWrite id={props.id} />
       </Grid>
     </React.Fragment>
   )
+}
+
+PostDetail.defaultProps = {
+  editable: false,
+  id: null,
+  user_info: null,
+  image_url: "https://via.placeholder.com/400/fff/fff.png",
+  contents: "",
+  comment_cnt: 0,
+  insert_dt: 1626618676
 }
 
 export default PostDetail;

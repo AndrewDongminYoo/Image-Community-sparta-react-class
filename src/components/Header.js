@@ -14,12 +14,26 @@ const GrayButton = {
     borderWidth: 0.7,
 }
 
+const Badge = {
+    backgroundColor: "#FF5C28",
+    textAlign: "center",
+    lineHeight: 0.25,
+    width: 25,
+    height: 25,
+    borderRadius: 25,
+    left: 250,
+    top: 0,
+    position: "absolute",
+    fontSize: 8,
+}
+
 const Header = (props) => {
 
     const dispatch = useDispatch();
     const is_login = useSelector((state) => state.user.is_login);
     const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`
     const is_session = sessionStorage.getItem(_session_key) ? true : false
+    const notice = useSelector((state) => state.post.unread);
 
     return is_login && is_session
     ? (
@@ -36,7 +50,14 @@ const Header = (props) => {
                             dispatch(userActions.logOut())
                             sessionStorage.removeItem(_session_key)
                     }}/>
-                    <Button containerStyle={GrayButton} text="알림" />
+                    <Button
+                        position="relative"
+                        containerStyle={GrayButton}
+                        text="알림"
+                        _onClick={() => {
+                            history.push('/notice')
+                    }}/>
+                    {notice ? <Button containerStyle={Badge} text={notice}/> : null}
                     <Button containerStyle={GrayButton} text="내 정보" />
 
                 </Grid>

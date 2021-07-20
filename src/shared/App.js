@@ -5,7 +5,7 @@ import AddPost from '../elements/AddPost'
 import { ConnectedRouter } from 'connected-react-router'
 import { Route } from "react-router-dom";
 import { history } from '../redux/configureStore'
-import { PostList, Login, Signup, PostWrite } from "../pages";
+import { PostList, Login, Signup, PostWrite, Notification, PostDetail } from "../pages";
 import { useDispatch } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user'
 import { apiKey } from './Firebase';
@@ -15,7 +15,7 @@ function App() {
 
   const dispatch = useDispatch()
 
-  useEffect(()=>{
+  useEffect(() => {
     const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`
     const is_session = sessionStorage.getItem(_session_key) ? true : false
     if (is_session) {
@@ -27,12 +27,15 @@ function App() {
     <React.Fragment>
       <Header />
       <ConnectedRouter history={history}>
-        <Route path="/" exact component={PostList}/>
-        <Route path="/login" exact component={Login}/>
-        <Route path="/signup" exact component={Signup}/>
-        <Route path="/upload" exact component={PostWrite}/>
+        <Route path="/" exact component={PostList} />
+        <Route path="/post/:post_id" exact component={PostDetail} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/signup" exact component={Signup} />
+        <Route path="/write" exact component={PostWrite} />
+        <Route path="/write/:post_id" exact component={PostWrite} />
+        <Route path="/notice" exact component={Notification} />
         <Permit>
-          <AddPost/>
+          <AddPost />
         </Permit>
       </ConnectedRouter>
     </React.Fragment>

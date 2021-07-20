@@ -29,7 +29,7 @@ const AddPost = (props) => {
 
   return (
     <BtnContainer onClick={()=>{
-      history.push('/upload')}}
+      history.push('/write')}}
     >
         <PlusCircleOutlined style={IconStyle} />
     </BtnContainer>

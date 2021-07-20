@@ -50,6 +50,7 @@ const Login = (Route) => {
       <Container>
         <Text size="32px" bold>로그인</Text>
         <Input
+          id="email-input"
           label="이메일"
           value={Email}
           _onChange={(e) => setEmail(e.target.value)}
@@ -57,6 +58,7 @@ const Login = (Route) => {
           returnKeyType="next"
         />
         <Input
+          id="password-input"
           label="비밀번호"
           value={password}
           _onChange={(e) => setPassword(e.target.value)}

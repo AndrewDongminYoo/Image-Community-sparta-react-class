@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { history } from '../redux/configureStore'
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, Grid, Image, Button, Input } from "../elements";
-import { actionCreators as postActions }  from '../redux/modules/post'
-import { actionCreators as imageActions }  from '../redux/modules/image'
+import { actionCreators as postActions } from '../redux/modules/post'
+import { actionCreators as imageActions } from '../redux/modules/image'
+import { useEffect } from 'react';
 
 const Container = styled.form`
   flex-direction: column;
@@ -29,32 +30,42 @@ const PostWrite = (Route) => {
 
   const [contents, setContents] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const is_login = useSelector((state) => state.user.is_login)
-  const preview = useSelector((state) => state.image.preview)
-  const dispatch = useDispatch()
+  const [disable, setDisable] = useState(false)
+  const is_login = useSelector((state) => state.user?.is_login);
+  const preview = useSelector((state) => state.image?.preview);
+  const post_list = useSelector((state) => state.post.list);
 
-  // 사진 미리보기를 세팅하는 onChange 함수!
+  const dispatch = useDispatch();
+  const post_id = Route.match.params.post_id;
+  const edit_post = post_id ? true : false;
+  const find_post = edit_post ? post_list.find((post) => post.id === post_id) : null
+
+  useEffect(() => {
+    if (edit_post && !find_post) {
+      window.alert('포스트가 존재하지 않아요!'); history.goBack(); return;
+    } else if (edit_post && find_post) {
+      dispatch(imageActions.showPreview(find_post.image_url))
+      if (find_post.comments) {
+        setDisable(true)
+      }
+    }
+    // eslint-disable-next-line
+  }, [dispatch])
+
+  // 서버 업로드 없이 사진 미리보기를 세팅하는 onChange 함수!
   const selectFile = (e) => {
     const reader = new FileReader();
     const file = e.target.files[0];
     console.log(file)
-    if (!file) {
-      console.log('File Open Error')
-      return
-    }
-    if (!file.type.startsWith('image/')) {
-      window.alert('이미지 파일만 업로드할 수 있어요ㅠ')
-      return
-    }
-    if (file.size > 52428800) {
-      window.alert('파일이 너무 크네요ㅠㅠ')
-      return
-    }
+    if (!file) { console.log('File Open Error'); return; }
+    else if (!file.type.startsWith('image/')) { window.alert('이미지 파일만 업로드할 수 있어요ㅠ'); return; }
+    else if (file.size > 52428800) { window.alert('파일이 너무 크네요ㅠㅠ'); return; }
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       dispatch(imageActions.showPreview(reader.result));
     };
   }
+
   // 이 함수는 포스트 작성 버튼을 눌렀을때 실행될 함수!
   const handlePostWritePress = async () => {
     if (!preview) {
@@ -62,7 +73,11 @@ const PostWrite = (Route) => {
     } else if (!contents) {
       setErrorMessage("어떤 사진인가요? 친구들에게 알려주세요.")
     } else {
-      await dispatch(postActions.addPostFB(contents));
+      if (edit_post) {
+        await dispatch(postActions.editPostFB(post_id, { contents: contents }));
+      } else {
+        await dispatch(postActions.addPostFB(contents));
+      }
       await setErrorMessage('');
       await dispatch(imageActions.showPreview(null));
       await alert('업로드 성공!!!');
@@ -74,31 +89,24 @@ const PostWrite = (Route) => {
   // 라벨이 가려서 예쁘게 출력해줍니다. (라벨 텍스트 입력해야함)
   return !is_login ? (
     <Grid margin="200px 0px" padding="16px" center>
-      <Text size="32px" bold>
-        잠깐!
-      </Text>
-      <Text size="16px">
-        로그인 후에만 글을 쓸 수 있어요!
-      </Text>
+      <Text size="32px" bold>잠깐!</Text>
+      <Text size="16px">로그인 후에만 글을 쓸 수 있어요!</Text>
       <Button
         _onClick={() => {
           history.replace("/login");
         }}
-      >
-        로그인 하러가기
-      </Button>
+        text="로그인 하러가기"
+      />
     </Grid>
   ) : (
     <React.Fragment>
       <Container>
-        <Text size="32px" bold>공유하기</Text>
+        <Text size="32px" bold>{edit_post ? "수정하기" : "작성하기"}</Text>
         <Grid>
-          <Image shape="rectangle" src={preview}/>
-          <Input
-            _onChange={selectFile}
-            isFileUpload
-            label="이 버튼을 눌러 일상을 공유하세요."
-          />
+          <Image shape="rectangle" src={preview ? preview : "http://via.placeholder.com/400"} />
+          {disable
+            ? <Input _onChange={selectFile} isFileUpload label="이 버튼을 눌러 일상을 공유하세요." disable />
+            : <Input _onChange={selectFile} isFileUpload label="댓글이 있는 사진 바꿀 수 없어요." />}
         </Grid>
         <Input
           numberOfLines={5}
@@ -107,10 +115,10 @@ const PostWrite = (Route) => {
           placeholder="이 사진에 담긴 이야기를 해주세요."
           label="사진설명"
         />
-        <ErrorText>{ errorMessage }</ErrorText>
+        <ErrorText>{errorMessage}</ErrorText>
         <Button
           _onClick={handlePostWritePress}
-          text="게시하기"
+          text={edit_post ? "수정하기" : "게시하기"}
           isFilled={false}
         />
       </Container>

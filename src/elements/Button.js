@@ -12,6 +12,7 @@ const BtnContainer = styled.div`
   border-radius: 3px;
   width: 100%;
   padding: 12px 0;
+  position: ${(props) => props.position};
 `;
 
 const BtnText = styled.span`
@@ -23,10 +24,11 @@ const BtnText = styled.span`
 
 const Button = props => {
 
-  const { containerStyle, _onClick, isFilled, text, children } = props;
+  const { position, containerStyle, _onClick, isFilled, text, children } = props;
 
   return (
     <BtnContainer
+      position={position}
       isFilled={isFilled}
       onClick={_onClick}
       style={containerStyle}

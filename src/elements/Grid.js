@@ -5,6 +5,7 @@ const GridBox = styled.div`
   width: ${(props) => props.width};
   height: 100%;
   box-sizing: border-box;
+  vertical-align: middle;
   flex-direction: ${(props) => !props.row ? "column" : "row"}${(props) => props.reverse ? "-reverse" : ""};
   ${(props) => props.padding ? `padding: ${props.padding};` : ""}
   ${(props) => props.margin ? `margin: ${props.margin};` : ""}
@@ -16,7 +17,7 @@ const GridBox = styled.div`
 
 const Grid = (props) => {
 
-  const {  is_flex, width, row, padding, reverse, margin, backgroundColor, children, center } = props
+  const { is_flex, width, row, padding, reverse, margin, backgroundColor, children, center } = props
 
   return (
     <React.Fragment>
@@ -30,7 +31,7 @@ const Grid = (props) => {
         backgroundColor={backgroundColor}
         center={center}
       >
-        { children }
+        {children}
       </GridBox>
     </React.Fragment>
   )

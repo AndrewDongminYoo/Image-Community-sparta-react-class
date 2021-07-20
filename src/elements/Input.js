@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placeholder, isPassword, maxLength, returnKeyType, isFileUpload, ref }) => {
+const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placeholder, isPassword, maxLength, returnKeyType, isFileUpload, disable }) => {
 
   const [isFocused, setIsFocused] = useState(false);
   const fileRef = useRef();
@@ -10,17 +10,17 @@ const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placehol
 
   // file-input
   if (isFileUpload) {
-      return (
+    return (
       <Container>
-        <FileLabel accept="image/*" disabled={is_uploading} htmlFor="file-input">{ label }</FileLabel>
-        <FilePick ref={fileRef} onChange={_onChange} type="file" id="file-input" disabled={is_uploading}/>
+        <FileLabel accept="image/*" htmlFor="file-input" disabled={is_uploading || disable}>{label}</FileLabel>
+        <FilePick ref={fileRef} onChange={_onChange} type="file" id="file-input" disabled={is_uploading || disable} />
       </Container>
     ) // textarea
   } else if (numberOfLines) {
     return (
       <Container>
         <InputLabel>
-          { label }
+          {label}
         </InputLabel>
         <TextAreaInput
           value={value}
@@ -33,10 +33,10 @@ const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placehol
       </Container>
     ) // input(text, password, email)
   } else {
-    (
+    return (
       <Container>
         <InputLabel htmlFor={id} isFocused={isFocused}>
-          { label }
+          {label}
         </InputLabel>
         <TextInput
           id={id}
@@ -48,7 +48,7 @@ const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placehol
           }}
           placeholder={placeholder}
           returnKeyType={returnKeyType}
-          autoComplete={isPassword ? "current-password" : "false" }
+          autoComplete={isPassword ? "current-password" : "false"}
           maxLength={maxLength}
           autoCapitalize="false"
           autoCorrect="false"
@@ -56,8 +56,8 @@ const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placehol
           onSubmit={_onSubmit}
           onKeyPress={(key) =>
             key.key === 'Enter'
-            ? _onSubmit()
-            : null}
+              ? _onSubmit()
+              : null}
         />
       </Container>
     )
@@ -65,7 +65,8 @@ const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placehol
 }
 
 Input.defaultProps = {
-  _onChange: () => {},
+  _onChange: () => { },
+  _onSubmit: () => { },
   placeholder: "insert placeholder",
   isPassword: false,
   maxLength: 64,
@@ -83,7 +84,7 @@ const InputLabel = styled.label`
   font-size: 10px;
   font-weight: 600;
   margin-bottom: 4px;
-  color: ${({isFocused}) => isFocused ? "black" : "gray" };
+  color: ${({ isFocused }) => isFocused ? "black" : "gray"};
 `;
 
 const TextInput = styled.input`
@@ -95,7 +96,7 @@ const TextInput = styled.input`
   color: #000;
   padding: 6px 30px 6px 10px;
   font-size: 14px;
-  border: 1px solid ${({isFocused}) => isFocused ? "blue" : "transparent" };
+  border: 1px solid ${({ isFocused }) => isFocused ? "blue" : "transparent"};
   border-radius: 4px;
 `;
 

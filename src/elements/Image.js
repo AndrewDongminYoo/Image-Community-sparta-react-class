@@ -27,24 +27,39 @@ const AspectInner = styled.div`
   vertical-align: center;
 `;
 
-const Image = ({ shape, src, size }) => {
+const SquareImage = styled.div`
+  width: 90px;
+  height: 90px;
+  margin-right: 10px;
+  position: relative;
+  overflow: hidden;
+  background-image: url("${(props) => props.src}") ;
+  background-color: #FFFFE0;
+  background-size: cover;
+`;
+
+const Image = ({ shape, src, size, _onClick }) => {
 
   if (shape === 'circle') {
-      return (
+    return (
       <React.Fragment>
-        <ImageCircle src={src} size={size}/>
+        <ImageCircle src={src} size={size} />
       </React.Fragment>
     )
   } else if (shape === 'rectangle') {
     return (
       <React.Fragment>
-        <AspectOuter>
-          <AspectInner src={src}/>
+        <AspectOuter onClick={_onClick}>
+          <AspectInner src={src} />
         </AspectOuter>
       </React.Fragment>
     )
-  } else {
-    return null
+  } else if (shape === "square") {
+    return (
+      <React.Fragment>
+        <SquareImage src={src} />
+      </React.Fragment>
+    )
   }
 }
 
@@ -52,6 +67,7 @@ Image.defaultProps = {
   shape: "circle",
   src: "https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2F2018-12-23-03-55-59.jpg?alt=media",
   size: 36,
+  _onClick: () => { },
 }
 
 export default Image;
