@@ -12,28 +12,39 @@ const ADD_POST = "ADD_POST";
 const SET_POST = "SET_POST";
 const DEL_POST = "DEL_POST";
 const EDIT_POST = "EDIT_POST";
+const ISLOADING = "ISLOADING"
 
 // action creators
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 const setPost = createAction(SET_POST, (post) => ({ post }));
 const delPost = createAction(DEL_POST, (post) => ({ post }));
 const editPost = createAction(EDIT_POST, (post) => ({ post }));
+const isLoading = createAction(ISLOADING, (loading) => ({ loading }))
 
 // initialState
 const initialPost = {
   comment_cnt: 0,
-  insert_dt: getNow()
+  insert_dt: getNow(),
 }
 
 const initialState = {
   list: [],
   unread: 4,
+  loading: false,
 };
 
-const getPostFB = () => {
+const getPostFB = (start = null, size = 3) => {
   return function (dispatch, getState, { history }) {
-    const postDB = firestore.collection("post");
-    postDB.get()
+    dispatch(isLoading(true));
+    const postDB = firestore
+      .collection("post")
+      .orderBy("insert_dt", "desc")
+    if (start) {
+      postDB.startAt(start)
+    }
+    postDB
+      .limit(size + 1)
+      .get()
       .then((docs) => {
         let post_list = [];
         docs.forEach((doc) => {
@@ -187,6 +198,10 @@ export default handleActions(
     [DEL_POST]: (state, action) =>
       produce(state, (draft) => {
 
+      }),
+    [ISLOADING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.loading = action.payload.loading;
       }),
   },
   initialState
