@@ -6,7 +6,7 @@ const BtnContainer = styled.div`
   border: none;
   display: block;
   background-color: ${(props) => props.isFilled ? 'black' : 'transparent'};
-  border: ${(props) => props.isFilled ? 'none': '1px solid black' };
+  border: ${(props) => props.isFilled ? 'none' : '1px solid black'};
   align-items: center;
   justify-content: center;
   border-radius: 3px;
@@ -34,14 +34,14 @@ const Button = props => {
       style={containerStyle}
     >
       <BtnText isFilled={isFilled}>
-        { text || children }
+        {text || children}
       </BtnText>
     </BtnContainer>
   )
 }
 
 Button.defaultProps = {
-  _onClick: () => {},
+  _onClick: () => { },
   isFilled: true,
 }
 

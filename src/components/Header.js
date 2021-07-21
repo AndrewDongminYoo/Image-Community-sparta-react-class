@@ -6,7 +6,7 @@ import { history } from '../redux/configureStore'
 import { apiKey } from '../shared/Firebase'
 
 const GrayButton = {
-    backgroundColor:"#CBCBCB",
+    backgroundColor: "#CBCBCB",
     borderRadius: 3,
     width: 80,
     height: 36,
@@ -21,8 +21,8 @@ const Badge = {
     width: 25,
     height: 25,
     borderRadius: 25,
-    left: 250,
-    top: 0,
+    right: 80,
+    bottom: 18,
     position: "absolute",
     fontSize: 8,
 }
@@ -36,58 +36,57 @@ const Header = (props) => {
     const notice = useSelector((state) => state.post.unread);
 
     return is_login && is_session
-    ? (
-        <React.Fragment>
-            <Grid is_flex padding="8px 16px" row>
-                <Grid row>
-                    <Text margin="0px" size="24px" bold>꼬스타</Text>
-                </Grid>
-                <Grid is_flex row reverse>
-                    <Button
-                        containerStyle={GrayButton}
-                        text="로그아웃"
-                        _onClick={() => {
-                            dispatch(userActions.logOut())
-                            sessionStorage.removeItem(_session_key)
-                    }}/>
-                    <Button
-                        position="relative"
-                        containerStyle={GrayButton}
-                        text="알림"
-                        _onClick={() => {
-                            history.push('/notice')
-                    }}/>
-                    {notice ? <Button containerStyle={Badge} text={notice}/> : null}
-                    <Button containerStyle={GrayButton} text="내 정보" />
+        ? (
+            <React.Fragment>
+                <Grid is_flex padding="8px 16px" row>
+                    <Grid row>
+                        <Text margin="0px" size="24px" bold>꼬스타</Text>
+                    </Grid>
+                    <Grid is_flex row justify="flex-end" position="relative">
+                        <Button containerStyle={GrayButton} text="내 정보" />
+                        <Button
+                            containerStyle={GrayButton}
+                            text="알림"
+                            _onClick={() => {
+                                history.push('/notice')
+                            }} />
+                        <Button
+                            containerStyle={GrayButton}
+                            text="로그아웃"
+                            _onClick={() => {
+                                dispatch(userActions.logOut())
+                                sessionStorage.removeItem(_session_key)
+                            }} />
+                        {notice ? <Button containerStyle={Badge} text={notice} /> : null}
 
+                    </Grid>
                 </Grid>
-            </Grid>
-        </React.Fragment>
-    ) : (
-        <React.Fragment>
-            <Grid is_flex row padding="8px 16px">
-                <Grid is_flex row>
-                    <Text margin="0px" size="24px" bold>꼬리스타</Text>
+            </React.Fragment>
+        ) : (
+            <React.Fragment>
+                <Grid is_flex row padding="8px 16px">
+                    <Grid is_flex row>
+                        <Text margin="0px" size="24px" bold>꼬리스타</Text>
+                    </Grid>
+                    <Grid is_flex row reverse>
+                        <Button
+                            containerStyle={GrayButton}
+                            text="로그인"
+                            _onClick={() => {
+                                history.push('/login')
+                            }}
+                        />
+                        <Button
+                            containerStyle={GrayButton}
+                            text="회원가입"
+                            _onClick={() => {
+                                history.push('/signup')
+                            }}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid is_flex row reverse>
-                    <Button
-                        containerStyle={GrayButton}
-                        text="로그인"
-                        _onClick={()=> {
-                            history.push('/login')
-                        }}
-                    />
-                    <Button
-                        containerStyle={GrayButton}
-                        text="회원가입"
-                        _onClick={()=> {
-                            history.push('/signup')
-                        }}
-                    />
-                </Grid>
-            </Grid>
-        </React.Fragment>
-    )
+            </React.Fragment>
+        )
 }
 
 Header.defaultProps = {}

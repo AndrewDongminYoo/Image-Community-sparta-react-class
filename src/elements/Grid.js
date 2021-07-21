@@ -11,17 +11,19 @@ const GridBox = styled.div`
   ${(props) => props.margin ? `margin: ${props.margin};` : ""}
   ${(props) => props.backgroundColor ? `background-color: ${props.backgroundColor};` : ""}
   ${(props) => props.is_flex ? `display: flex; align-items: center;` : ""}
-  justify-content: center;
+  justify-content: ${(props) => props.justify === 'flex-end' ? 'flex-end' : 'center'};
   ${(props) => props.center ? `text-align: center;` : ""}
+  position: ${(props) => props.position};
 `;
 
 const Grid = (props) => {
 
-  const { is_flex, width, row, padding, reverse, margin, backgroundColor, children, center } = props
+  const { is_flex, justify, position, width, row, padding, reverse, margin, backgroundColor, children, center } = props
 
   return (
     <React.Fragment>
       <GridBox
+        justify={justify}
         is_flex={is_flex}
         width={width}
         reverse={reverse}
@@ -30,6 +32,7 @@ const Grid = (props) => {
         margin={margin}
         backgroundColor={backgroundColor}
         center={center}
+        position={position}
       >
         {children}
       </GridBox>
@@ -39,6 +42,7 @@ const Grid = (props) => {
 }
 
 Grid.defaultProps = {
+  position: "static",
   children: null,
   is_flex: false,
   width: "100%",

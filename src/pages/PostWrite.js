@@ -26,9 +26,8 @@ const ErrorText = styled.p`
   color: red;
 `;
 
-const PostWrite = (Route) => {
+const PostWrite = (props) => {
 
-  const [contents, setContents] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [disable, setDisable] = useState(false)
   const is_login = useSelector((state) => state.user?.is_login);
@@ -36,16 +35,17 @@ const PostWrite = (Route) => {
   const post_list = useSelector((state) => state.post.list);
 
   const dispatch = useDispatch();
-  const post_id = Route.match.params.post_id;
+  const post_id = props.match.params.post_id;
   const edit_post = post_id ? true : false;
   const find_post = edit_post ? post_list.find((post) => post.id === post_id) : null
+  const [contents, setContents] = useState(find_post ? find_post.contents : "");
 
   useEffect(() => {
     if (edit_post && !find_post) {
       window.alert('포스트가 존재하지 않아요!'); history.goBack(); return;
     } else if (edit_post && find_post) {
       dispatch(imageActions.showPreview(find_post.image_url))
-      if (find_post.comments) {
+      if (find_post.comments?.length) {
         setDisable(true)
       }
     }
@@ -103,10 +103,8 @@ const PostWrite = (Route) => {
       <Container>
         <Text size="32px" bold>{edit_post ? "수정하기" : "작성하기"}</Text>
         <Grid>
-          <Image shape="rectangle" src={preview ? preview : "http://via.placeholder.com/400"} />
-          {disable
-            ? <Input _onChange={selectFile} isFileUpload label="이 버튼을 눌러 일상을 공유하세요." disable />
-            : <Input _onChange={selectFile} isFileUpload label="댓글이 있는 사진 바꿀 수 없어요." />}
+          <Image shape="rectangle" src={preview ? preview : "http://via.placeholder.com/400/eee/eee"} />
+          <Input _onChange={selectFile} isFileUpload label="이 버튼을 눌러 일상을 공유하세요." disable={disable} />
         </Grid>
         <Input
           numberOfLines={5}

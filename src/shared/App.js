@@ -28,12 +28,12 @@ function App() {
       <Header />
       <ConnectedRouter history={history}>
         <Route path="/" exact component={PostList} />
-        <Route path="/post/:post_id" exact component={PostDetail} />
+        <Route path="/notice" exact component={Notification} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/write" exact component={PostWrite} />
+        <Route path="/post/:post_id" exact component={PostDetail} />
         <Route path="/write/:post_id" exact component={PostWrite} />
-        <Route path="/notice" exact component={Notification} />
         <Permit>
           <AddPost />
         </Permit>
