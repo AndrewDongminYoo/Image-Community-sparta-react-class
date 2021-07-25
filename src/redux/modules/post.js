@@ -16,9 +16,9 @@ const ISLOADING = "ISLOADING"
 
 // action creators
 const addPost = createAction(ADD_POST, (post) => ({ post }));
-const setPost = createAction(SET_POST, (post) => ({ post }));
+const setPost = createAction(SET_POST, (post, paging) => ({ post, paging }));
 const delPost = createAction(DEL_POST, (post) => ({ post }));
-const editPost = createAction(EDIT_POST, (post) => ({ post }));
+const editPost = createAction(EDIT_POST, (post_id, post) => ({ post_id, post }));
 const isLoading = createAction(ISLOADING, (loading) => ({ loading }))
 
 // initialState
@@ -30,23 +30,34 @@ const initialPost = {
 const initialState = {
   list: [],
   unread: 4,
+  paging: { start: null, next: null, size: 3 },
   loading: false,
 };
 
 const getPostFB = (start = null, size = 3) => {
   return function (dispatch, getState, { history }) {
+    let paging = getState().post.paging;
+    if (paging.start && !paging.next) {
+      return;
+    }
     dispatch(isLoading(true));
-    const postDB = firestore
+    let postDB = firestore
       .collection("post")
       .orderBy("insert_dt", "desc")
     if (start) {
-      postDB.startAt(start)
+      postDB = postDB.startAt(start)
     }
     postDB
       .limit(size + 1)
       .get()
       .then((docs) => {
         let post_list = [];
+        let len = docs.docs.length;
+        paging = {
+          start: docs.docs[0],
+          next: len === size + 1 ? docs.docs[len - 1] : null,
+          size: size,
+        };
         docs.forEach((doc) => {
           const _post = {
             id: doc.id,
@@ -67,7 +78,8 @@ const getPostFB = (start = null, size = 3) => {
           }
           post_list.push(post)
         })
-        dispatch(setPost(post_list));
+        post_list.pop();
+        dispatch(setPost(post_list, paging));
       }).catch((error) => {
         console.error(error.message)
       })
@@ -188,7 +200,9 @@ export default handleActions(
       }),
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.list = action.payload.post;
+        draft.list.push(...action.payload.post);
+        draft.paging = action.payload.paging;
+        draft.loading = false;
       }),
     [EDIT_POST]: (state, action) =>
       produce(state, (draft) => {

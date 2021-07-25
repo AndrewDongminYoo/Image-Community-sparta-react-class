@@ -7,8 +7,12 @@ import { actionCreators as postActions } from '../redux/modules/post'
 const PostList = (props) => {
 
   const dispatch = useDispatch();
-  const post_list = useSelector((state) => state.post.list)
-  const user = useSelector((state) => state.user.user)
+  const post_list = useSelector((state) => state.post.list);
+  const user = useSelector((state) => state.user.user);
+  const loading = useSelector((state) => state.post.loading);
+  const paging = useSelector((state) => state.post.paging);
+  console.log(paging.start?.id)
+  console.log(paging.next?.id)
 
   useEffect(() => {
     if (post_list.length === 0) {
@@ -26,6 +30,7 @@ const PostList = (props) => {
           return <Post key={post.id} {...post} />
         }
       })}
+      <button onClick={() => dispatch(postActions.getPostFB(paging.next, 3))}>추가로드</button>
     </React.Fragment>
   )
 }

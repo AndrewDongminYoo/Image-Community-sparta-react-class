@@ -48,7 +48,11 @@ const Header = (props) => {
                             containerStyle={GrayButton}
                             text="알림"
                             _onClick={() => {
-                                history.push('/notice')
+                                if (history.location.pathname !== "/notice") {
+                                    history.push('/notice')
+                                } else {
+                                    history.goBack()
+                                }
                             }} />
                         <Button
                             containerStyle={GrayButton}
@@ -68,7 +72,7 @@ const Header = (props) => {
                     <Grid is_flex row>
                         <Text margin="0px" size="24px" bold>꼬리스타</Text>
                     </Grid>
-                    <Grid is_flex row reverse>
+                    <Grid is_flex row justify="flex-end">
                         <Button
                             containerStyle={GrayButton}
                             text="로그인"
