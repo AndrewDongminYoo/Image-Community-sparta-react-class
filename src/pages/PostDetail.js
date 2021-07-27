@@ -7,18 +7,23 @@ import { actionCreators as postActions } from '../redux/modules/post'
 
 const PostDetail = (props) => {
 
-  const { history, match } = props;
+  const { match, history } = props;
   const dispatch = useDispatch()
-  const is_login = useSelector((state) => state.user?.is_login);
-  const post_list = useSelector((state) => state.post.list);
+  const user_info = useSelector((state) => state.user?.user);
+  const post_list = useSelector((state) => state.post?.list);
   const post_id = match.params?.post_id;
-  const view_post = post_id ? post_list.find((post) => post.id === post_id) : null
+  const post = post_id ? post_list.find((post) => post.id === post_id) : null
 
   useEffect(() => {
-    if (post_list.length === 0) {
-      dispatch(postActions.getPostFB())
-    } else if (!(is_login && view_post)) {
-      window.alert('포스트가 존재하지 않아요!'); history.replace('/'); return;
+    dispatch(postActions.getOnePostFB(post_id))
+    if (post_id) {
+      try {
+        dispatch(postActions.getOnePostFB(post_id))
+      } catch {
+        history.replace('/'); return;
+      }
+    } else {
+      history.replace('/'); return;
     }
     // eslint-disable-next-line
   }, [dispatch])
@@ -26,9 +31,9 @@ const PostDetail = (props) => {
   return (
     <React.Fragment>
       <Grid >
-        <Post {...props} {...view_post} />
-        <CommentList {...props} {...view_post} />
-        <CommentWrite {...props} {...view_post} />
+        <Post {...props} {...post} editable={post?.user_info.user_uid === user_info?.uid} />
+        <CommentList post_id={post_id} {...props} {...post} />
+        <CommentWrite post_id={post_id} {...props} {...post} />
       </Grid>
     </React.Fragment>
   )

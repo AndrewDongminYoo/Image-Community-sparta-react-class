@@ -86,6 +86,32 @@ const getPostFB = (start = null, size = 3) => {
   }
 }
 
+const getOnePostFB = (post_id) => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection("post");
+    postDB.doc(post_id).get().then(doc => {
+      console.log(doc);
+      console.log(doc.data());
+
+      let _post = doc.data();
+      let post = Object.keys(_post).reduce(
+        (acc, cur) => {
+          if (cur.indexOf("user_") !== -1) {
+            return {
+              ...acc,
+              user_info: { ...acc.user_info, [cur]: _post[cur] },
+            };
+          }
+          return { ...acc, [cur]: _post[cur] };
+        },
+        { id: doc.id, user_info: {} }
+      );
+
+      dispatch(setPost([post]));
+    })
+  }
+}
+
 // eslint-disable-next-line
 const editPostFB = (post_id = null, post = {}) => {
   return function (dispatch, getState, { history }) {
@@ -201,7 +227,17 @@ export default handleActions(
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.list.push(...action.payload.post);
-        draft.paging = action.payload.paging;
+        draft.list = draft.list.reduce((acc, cur) => {
+          if (acc.findIndex(post => post.id === cur.id) === -1) {
+            return [...acc, cur];
+          } else {
+            acc[acc.findIndex(post => post.id === cur.id)] = cur;
+            return acc;
+          }
+        }, []);
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
         draft.loading = false;
       }),
     [EDIT_POST]: (state, action) =>
@@ -226,7 +262,9 @@ const actionCreators = {
   addPost,
   setPost,
   delPost,
+  editPost,
   getPostFB,
+  getOnePostFB,
   addPostFB,
   editPostFB,
 };

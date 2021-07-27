@@ -43,7 +43,7 @@ const Post = props => {
               history.push(`/post/${id}`)
             }} />
         </Grid>
-        <Grid row padding="0px 12px">
+        <Grid row padding="5px 12px">
           <IconButton isFilled={likedPost} _onClick={() => SetLikedPost(!likedPost)} Filled={HeartFilled} Outlined={HeartOutlined} />
           <Text bold>&nbsp;댓글 {!comment_cnt ? "0" : comment_cnt}개</Text>
         </Grid>
