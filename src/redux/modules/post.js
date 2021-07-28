@@ -29,7 +29,6 @@ const initialPost = {
 
 const initialState = {
   list: [],
-  unread: 4,
   paging: { start: null, next: null, size: 3 },
   loading: false,
 };

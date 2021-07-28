@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from '../redux/configureStore'
 import { apiKey } from '../shared/Firebase'
+import NotiBadge from "./NotiBadge";
 
 const GrayButton = {
     backgroundColor: "#CBCBCB",
@@ -14,26 +15,12 @@ const GrayButton = {
     borderWidth: 0.7,
 }
 
-const Badge = {
-    backgroundColor: "#FF5C28",
-    textAlign: "center",
-    lineHeight: 0.25,
-    width: 25,
-    height: 25,
-    borderRadius: 25,
-    right: 80,
-    bottom: 18,
-    position: "absolute",
-    fontSize: 8,
-}
-
 const Header = (props) => {
 
     const dispatch = useDispatch();
     const is_login = useSelector((state) => state.user.is_login);
     const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`
     const is_session = sessionStorage.getItem(_session_key) ? true : false
-    const notice = useSelector((state) => state.post.unread);
 
     return is_login && is_session
         ? (
@@ -44,16 +31,18 @@ const Header = (props) => {
                     </Grid>
                     <Grid is_flex row justify="flex-end" position="relative">
                         <Button containerStyle={GrayButton} text="내 정보" />
-                        <Button
-                            containerStyle={GrayButton}
-                            text="알림"
-                            _onClick={() => {
-                                if (history.location.pathname !== "/notice") {
-                                    history.push('/notice')
-                                } else {
-                                    history.goBack()
-                                }
-                            }} />
+                        <NotiBadge>
+                            <Button
+                                containerStyle={GrayButton}
+                                text="알림"
+                                _onClick={() => {
+                                    if (history.location.pathname !== "/notice") {
+                                        history.push('/notice')
+                                    } else {
+                                        history.goBack()
+                                    }
+                                }} />
+                        </NotiBadge>
                         <Button
                             containerStyle={GrayButton}
                             text="로그아웃"
@@ -61,8 +50,6 @@ const Header = (props) => {
                                 dispatch(userActions.logOut())
                                 sessionStorage.removeItem(_session_key)
                             }} />
-                        {notice ? <Button containerStyle={Badge} text={notice} /> : null}
-
                     </Grid>
                 </Grid>
             </React.Fragment>
