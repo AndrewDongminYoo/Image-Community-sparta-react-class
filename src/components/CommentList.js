@@ -13,7 +13,6 @@ const getDateOrTime = ts => {
 // eslint-disable-next-line
 const CommentItem = (props) => {
 
-  console.log(props)
   const { user_name, user_profile, contents, insert_dt } = props.cmt
 
   return (
@@ -30,7 +29,6 @@ const CommentItem = (props) => {
 
 const CommentList = props => {
 
-  console.log(props)
   const post_id = props.match ? props?.match?.params?.post_id : props.id;
   const comment_list = useSelector((state) => state.comment.list)
   const dispatch = useDispatch()

@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import { firebase, firestore } from "../../shared/Firebase";
+import { firebase, firestore, realtime } from "../../shared/Firebase";
 import { actionCreators as postActions } from "./post";
 
 const getNow = () => {

@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
-import { Badge } from '@material-ui/core'
+import React, { useState, useEffect } from 'react';
+import Badge from '@material-ui/core/Badge';
+import { realtime } from '../shared/Firebase';
+import { useSelector } from 'react-redux';
 
 const defaultProps = {
-  color: 'secondary',
+  color: 'error',  // for orange color;
   max: 99,
 };
 
 const NotiBadge = (props) => {
+  // eslint-disable-next-line
   const [count, setCount] = useState(4);
   const [invisible, setInvisible] = useState(false);
+  const user_id = useSelector((state) => state.user.user.uid)
+
+  useEffect(() => {
+    const notiDB = realtime.ref(`noti/${user_id}`)
+    notiDB.on("value", (snapshot) => {
+      console.log(snapshot.val().read)
+      if (!snapshot.val().read) return;
+      setInvisible(snapshot.val().read)
+    })
+    return () => notiDB.off();
+
+  }, [user_id])
 
   return (
     <Badge
       badgeContent={count}
       {...defaultProps}
       invisible={invisible}
+      onClick={props.children.props._onClick}
     >
       {props.children}
     </Badge>
