@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Image, Text } from '../elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { history } from '../redux/configureStore';

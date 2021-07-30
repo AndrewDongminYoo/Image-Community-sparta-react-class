@@ -18,11 +18,12 @@ const GridBox = styled.div`
 
 const Grid = (props) => {
 
-  const { is_flex, justify, position, width, row, padding, reverse, margin, backgroundColor, children, center } = props
+  const { _onClick, is_flex, justify, position, width, row, padding, reverse, margin, backgroundColor, children, center } = props
 
   return (
     <React.Fragment>
       <GridBox
+        onClick={_onClick}
         justify={justify}
         is_flex={is_flex}
         width={width}
