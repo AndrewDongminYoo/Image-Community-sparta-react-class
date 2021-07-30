@@ -115,7 +115,9 @@ const FileLabel = styled.label`
   display: block;
   width: 100%;
   height: 30px;
-  background-color:#FFD8B2;
+  opacity: 0.6;
+  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+  box-shadow: 0 3px 5px 2px rgba(255, 105, 135, .3);
   border-radius: 4px;
   color: white;
   text-align: center;

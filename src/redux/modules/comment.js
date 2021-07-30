@@ -29,7 +29,6 @@ const getCommentFB = (post_id = null) => {
       .orderBy("insert_dt", "desc")
       .get()
       .then((docs) => {
-        console.log(docs)
         let cmt_list = [];
         docs.forEach((doc) => {
           cmt_list.push({ ...doc.data(), id: doc.id })
@@ -45,7 +44,7 @@ const addCommentFB = (post_id, contents) => {
   return function (dispatch, getState, { history }) {
     if (!post_id) return;
     const commentDB = firestore.collection("comment");
-    const user_info = getState().user?.user;
+    const user_info = getState().user.user;
     if (!user_info) return;
     let comment = {
       post_id: post_id,
@@ -59,6 +58,24 @@ const addCommentFB = (post_id, contents) => {
       comment = { ...comment, id: doc.id }
       const postDB = firestore.collection("post");
       const post = getState().post.list.find(p => p.id === post_id);
+      console.log(post)
+      const _noti_item = realtime
+        .ref(`noti/${post.user_info.user_uid}/list`)
+        .push();
+      _noti_item.set({
+        post_id: post.id,
+        contents: contents,
+        user_name: comment.user_name,
+        image_url: post.image_url,
+        insert_dt: comment.insert_dt
+      }, (err) => {
+        if (err) {
+          console.log('알림 저장 실패');
+        } else {
+          const notiDB = realtime.ref(`noti/${post.user_info.user_uid}`);
+          notiDB.update({ read: false });
+        }
+      });
       const increment = firebase
         .firestore
         .FieldValue
@@ -68,10 +85,13 @@ const addCommentFB = (post_id, contents) => {
         .update({ comment_cnt: increment })
         .then((_post) => {
           dispatch(addComment(post_id, comment));
-          if (!post) return;
-          dispatch(postActions.editPostFB(post_id, {
-            comment_cnt: parseInt(post.comment_cnt) + 1,
-          }))
+          if (post) {
+            dispatch(
+              postActions.editPostFB(post_id, {
+                comment_cnt: parseInt(post.comment_cnt) + 1,
+              }))
+          }
+          console.log(post);
         }).catch((error) => {
           console.error(error.message)
         })

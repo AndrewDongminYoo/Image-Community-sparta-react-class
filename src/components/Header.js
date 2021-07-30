@@ -3,7 +3,7 @@ import { Grid, Text, Button } from "../elements";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from '../redux/configureStore'
-import { apiKey } from '../shared/Firebase'
+import { apiKey, realtime } from '../shared/Firebase'
 import NotiBadge from "./NotiBadge";
 
 const GrayButton = {
@@ -19,8 +19,15 @@ const Header = (props) => {
 
     const dispatch = useDispatch();
     const is_login = useSelector((state) => state.user.is_login);
+    const user_id = useSelector((state) => state.user.user?.uid)
     const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`
     const is_session = sessionStorage.getItem(_session_key) ? true : false
+
+    const notiCheck = () => {
+        const notiDB = realtime.ref(`noti/${user_id}`)
+        notiDB.update({ read: true })
+        if (history.location.pathname !== "/notice") history.push('/notice');
+    }
 
     return is_login && is_session
         ? (
@@ -35,13 +42,7 @@ const Header = (props) => {
                             <Button
                                 containerStyle={GrayButton}
                                 text="알림"
-                                _onClick={() => {
-                                    if (history.location.pathname !== "/notice") {
-                                        history.push('/notice')
-                                    } else {
-                                        history.goBack()
-                                    }
-                                }} />
+                                _onClick={() => notiCheck()} />
                         </NotiBadge>
                         <Button
                             containerStyle={GrayButton}

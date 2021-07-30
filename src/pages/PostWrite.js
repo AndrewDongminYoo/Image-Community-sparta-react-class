@@ -35,14 +35,16 @@ const PostWrite = (props) => {
   const post_list = useSelector((state) => state.post.list);
 
   const dispatch = useDispatch();
-  const post_id = props.match.params.post_id;
+  const post_id = !props.match.params.post_id ? null : props.match.params.post_id;
+  console.log(post_id)
+  console.log(props)
   const edit_post = post_id ? true : false;
   const find_post = edit_post ? post_list.find((post) => post.id === post_id) : null
   const [contents, setContents] = useState(find_post ? find_post.contents : "");
 
   useEffect(() => {
     if (edit_post && !find_post) {
-      window.alert('포스트가 존재하지 않아요!'); history.goBack(); return;
+      window.alert('포스트 데이터가 존재하지 않아요!'); history.goBack(); return;
     } else if (edit_post && find_post) {
       dispatch(imageActions.showPreview(find_post.image_url))
       if (find_post.comments?.length) {

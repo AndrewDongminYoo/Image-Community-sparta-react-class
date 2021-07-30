@@ -17,8 +17,8 @@ const NotiBadge = (props) => {
   useEffect(() => {
     const notiDB = realtime.ref(`noti/${user_id}`)
     notiDB.on("value", (snapshot) => {
+      if (!snapshot.val()) return;
       console.log(snapshot.val().read)
-      if (!snapshot.val().read) return;
       setInvisible(snapshot.val().read)
     })
     return () => notiDB.off();

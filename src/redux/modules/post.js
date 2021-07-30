@@ -89,8 +89,6 @@ const getOnePostFB = (post_id) => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
     postDB.doc(post_id).get().then(doc => {
-      console.log(doc);
-      console.log(doc.data());
 
       let _post = doc.data();
       let post = Object.keys(_post).reduce(
@@ -121,7 +119,6 @@ const editPostFB = (post_id = null, post = {}) => {
     const _image = getState().image.preview;
     const _post_idx = getState().post.list.findIndex((p) => p.id === post_id);
     const _post = getState().post.list[_post_idx];
-    console.log(_post);
     const postDB = firestore.collection("post");
 
     if (_image === _post.image_url) {

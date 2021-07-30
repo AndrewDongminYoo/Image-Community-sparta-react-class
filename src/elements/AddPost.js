@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { history } from '../redux/configureStore';
 
 const BtnContainer = styled.div`
@@ -10,7 +10,8 @@ const BtnContainer = styled.div`
   position: fixed;
   right: 16px;
   bottom: 32px;
-  background-color: #FFD600;
+  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+  box-shadow: 0 3px 5px 2px rgba(255, 105, 135, .3);
   text-align: center;
   border-radius: 24px;
   width: 48px;
@@ -28,10 +29,11 @@ const AddPost = (props) => {
   }
 
   return (
-    <BtnContainer onClick={()=>{
-      history.push('/write')}}
+    <BtnContainer onClick={() => {
+      history.push('/write')
+    }}
     >
-        <PlusCircleOutlined style={IconStyle} />
+      <EditOutlined style={IconStyle} />
     </BtnContainer>
   )
 }

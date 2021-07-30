@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Grid } from '../elements';
+import Permit from '../shared/Permit';
 import { CommentList, CommentWrite, Post } from '../components'
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as postActions } from '../redux/modules/post'
@@ -33,7 +34,9 @@ const PostDetail = (props) => {
       <Grid >
         <Post {...props} {...post} editable={post?.user_info.user_uid === user_info?.uid} />
         <CommentList post_id={post_id} {...props} {...post} />
-        <CommentWrite post_id={post_id} {...props} {...post} />
+        <Permit>
+          <CommentWrite post_id={post_id} {...props} {...post} />
+        </Permit>
       </Grid>
     </React.Fragment>
   )

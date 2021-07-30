@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Image, Text } from '../elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { history } from '../redux/configureStore';
@@ -29,9 +29,9 @@ const CommentItem = (props) => {
 
 const CommentList = props => {
 
-  const post_id = props.match ? props?.match?.params?.post_id : props.id;
   const comment_list = useSelector((state) => state.comment.list)
   const dispatch = useDispatch()
+  const post_id = props.id || props.match.params.post_id
 
   useEffect(() => {
     if (!post_id) {
