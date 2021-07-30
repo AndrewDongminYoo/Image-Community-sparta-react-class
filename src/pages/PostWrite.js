@@ -36,8 +36,6 @@ const PostWrite = (props) => {
 
   const dispatch = useDispatch();
   const post_id = !props.match.params.post_id ? null : props.match.params.post_id;
-  console.log(post_id)
-  console.log(props)
   const edit_post = post_id ? true : false;
   const find_post = edit_post ? post_list.find((post) => post.id === post_id) : null
   const [contents, setContents] = useState(find_post ? find_post.contents : "");
@@ -58,7 +56,6 @@ const PostWrite = (props) => {
   const selectFile = (e) => {
     const reader = new FileReader();
     const file = e.target.files[0];
-    console.log(file)
     if (!file) { console.log('File Open Error'); return; }
     else if (!file.type.startsWith('image/')) { window.alert('이미지 파일만 업로드할 수 있어요ㅠ'); return; }
     else if (file.size > 52428800) { window.alert('파일이 너무 크네요ㅠㅠ'); return; }

@@ -33,7 +33,9 @@ const Header = (props) => {
         ? (
             <React.Fragment>
                 <Grid is_flex padding="8px 16px" row>
-                    <Grid row>
+                    <Grid row _onClick={() => {
+                        history.push('/')
+                    }}>
                         <Text margin="0px" size="24px" bold>꼬스타</Text>
                     </Grid>
                     <Grid is_flex row justify="flex-end" position="relative">
@@ -57,8 +59,10 @@ const Header = (props) => {
         ) : (
             <React.Fragment>
                 <Grid is_flex row padding="8px 16px">
-                    <Grid is_flex row>
-                        <Text margin="0px" size="24px" bold>꼬리스타</Text>
+                    <Grid is_flex row _onClick={() => {
+                        history.push('/')
+                    }}>
+                        <Text margin="0px" size="24px" bold>꼬리스타그램</Text>
                     </Grid>
                     <Grid is_flex row justify="flex-end">
                         <Button

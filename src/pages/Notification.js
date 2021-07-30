@@ -16,7 +16,6 @@ const NoNotice = (props) => {
 const Notice = (props) => {
 
   const getDateOrTime = ts => moment.unix(ts.seconds).fromNow();
-  console.log(props)
   const { post_id, image_url, user_name, actionType, insert_dt, contents } = props;
 
   return (
