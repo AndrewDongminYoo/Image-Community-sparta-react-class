@@ -50,7 +50,7 @@ const addCommentFB = (post_id, contents) => {
       post_id: post_id,
       user_uid: user_info.uid,
       user_name: user_info.displayName,
-      user_profile: "",
+      user_profile: user_info.photoURL,
       contents: contents,
       insert_dt: getNow(),
     }
@@ -67,6 +67,7 @@ const addCommentFB = (post_id, contents) => {
         contents: contents,
         user_name: comment.user_name,
         image_url: post.image_url,
+        user_profile: comment.user_profile,
         insert_dt: comment.insert_dt
       }, (err) => {
         if (err) {

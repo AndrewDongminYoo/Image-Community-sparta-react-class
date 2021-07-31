@@ -56,7 +56,7 @@ Post.defaultProps = {
   editable: false,
   id: null,
   user_info: {
-    user_profile: "https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1626618671390?alt=media"
+    user_profile: "https://via.placeholder.com/400/fff/fff.png"
   },
   image_url: "https://via.placeholder.com/400/fff/fff.png",
   contents: "",

@@ -103,7 +103,7 @@ const PostWrite = (props) => {
         <title>꼬리스타그램 게시물 쓰기</title>
         <meta property="og:title" content={edit_post ? "꼬리스타그램 게시물 수정하기" : "꼬리스타그램 게시물 작성하기"} />
         <meta property="og:description" content="당신의 사진에 담긴 이야기를 들려주세요." />
-        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1627447658522?alt=media" />
+        <meta property="og:image" content="https://via.placeholder.com/400/fff/fff.png" />
       </Helmet>
       <Container>
         <Text size="32px" bold>{edit_post ? "수정하기" : "작성하기"}</Text>

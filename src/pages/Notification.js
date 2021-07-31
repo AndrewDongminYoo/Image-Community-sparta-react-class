@@ -10,7 +10,7 @@ import { Helmet } from "react-helmet";
 const NoNotice = (props) => {
 
   return (
-    <Image shape="rectangle" src="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2Fno%20notice.png?alt=media" />
+    <Image shape="rectangle" src="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/static%2Fno%20notice.png?alt=media" />
   )
 }
 
@@ -25,7 +25,7 @@ const Notice = React.memo((props) => {
         <title>꼬리스타그램 알림</title>
         <meta property="og:title" content="꼬리스타그램 알림" />
         <meta property="og:description" content="내 게시물에 어떤 댓글이 달렸을까요??" />
-        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1627447658522?alt=media" />
+        <meta property="og:image" content="https://via.placeholder.com/400/fff/fff.png" />
       </Helmet>
       <Grid
         is_flex

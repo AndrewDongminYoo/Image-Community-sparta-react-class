@@ -5,7 +5,7 @@ import AddPost from '../elements/AddPost'
 import { ConnectedRouter } from 'connected-react-router'
 import { Route } from "react-router-dom";
 import { history } from '../redux/configureStore'
-import { PostList, Login, Signup, PostWrite, Notification, PostDetail } from "../pages";
+import { MyPage, PostList, Login, Signup, PostWrite, Notification, PostDetail } from "../pages";
 import { useDispatch } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user'
 import { apiKey } from './Firebase';
@@ -28,6 +28,7 @@ function App() {
       <Header />
       <ConnectedRouter history={history}>
         <Route path="/" exact component={PostList} />
+        <Route path="/mypage" exact component={MyPage} />
         <Route path="/notice" exact component={Notification} />
         <Route path="/login" exact component={Login} />
         <Route path="/signup" exact component={Signup} />

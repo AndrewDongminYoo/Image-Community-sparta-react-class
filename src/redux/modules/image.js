@@ -4,11 +4,11 @@ import { storage } from "../../shared/Firebase";
 
 const IS_UPLOADING = "IS_UPLOADING";
 const UPLOAD_IMAGE = "UPLOAD_IMAGE";
-const SHOW_PREVIEW = "SHOW_PREVIEW"
+const SHOW_PREVIEW = "SHOW_PREVIEW";
 
 const isUploading = createAction(IS_UPLOADING, (uploading) => ({ uploading }));
 const uploadImage = createAction(UPLOAD_IMAGE, (image_url) => ({ image_url }));
-const showPreview = createAction(SHOW_PREVIEW, (preview) => ({preview}))
+const showPreview = createAction(SHOW_PREVIEW, (preview) => ({ preview }))
 
 const initialState = {
   uploading: false,
@@ -17,18 +17,18 @@ const initialState = {
 }
 
 const uploadImageFB = image => {
-  return function(dispatch, getState, {history}) {
+  return function (dispatch, getState, { history }) {
     const user = getState().user.user;;
     dispatch(isUploading(true))
     const uploadImage = storage.ref(`images/${user.uid}/${image.name}`).put(image)
     uploadImage.then((snapshot) => {
       snapshot
-      .ref
-      .getDownloadURL()
-      .then((img_url) => {
-        dispatch(uploadImage(img_url));
-      })
-    }).catch((e)=>{
+        .ref
+        .getDownloadURL()
+        .then((img_url) => {
+          dispatch(uploadImage(img_url));
+        })
+    }).catch((e) => {
       console.error(e.message)
     })
   }
@@ -48,7 +48,7 @@ export default handleActions(
     [SHOW_PREVIEW]: (state, action) =>
       produce(state, (draft) => {
         draft.preview = action.payload.preview;
-    }),
+      }),
   },
   initialState
 );

@@ -26,7 +26,7 @@ const PostList = React.memo((props) => {
         <title>꼬리스타그램 뉴스피드</title>
         <meta property="og:title" content="꼬리스타그램 뉴스피드" />
         <meta property="og:description" content="당신의 반려동물 그들의 인생사진을 보여주세요." />
-        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1627447658522?alt=media" />
+        <meta property="og:image" content="https://via.placeholder.com/400/fff/fff.png" />
       </Helmet>
       <FlatList
         callNext={() => {

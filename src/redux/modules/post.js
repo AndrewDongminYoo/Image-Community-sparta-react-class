@@ -60,7 +60,6 @@ const getPostFB = (start = null, size = 3) => {
         docs.forEach((doc) => {
           const _post = {
             id: doc.id,
-            comments: [],
             ...doc.data()
           }
           const post = {
@@ -72,7 +71,6 @@ const getPostFB = (start = null, size = 3) => {
             },
             contents: _post.contents,
             insert_dt: _post.insert_dt,
-            comments: _post.comments,
             image_url: _post.image_url,
           }
           post_list.push(post)
@@ -89,7 +87,6 @@ const getOnePostFB = (post_id) => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
     postDB.doc(post_id).get().then(doc => {
-
       let _post = doc.data();
       let post = Object.keys(_post).reduce(
         (acc, cur) => {
@@ -103,7 +100,6 @@ const getOnePostFB = (post_id) => {
         },
         { id: doc.id, user_info: {} }
       );
-
       dispatch(setPost([post]));
     })
   }
@@ -120,7 +116,6 @@ const editPostFB = (post_id = null, post = {}) => {
     const _post_idx = getState().post.list.findIndex((p) => p.id === post_id);
     const _post = getState().post.list[_post_idx];
     const postDB = firestore.collection("post");
-
     if (_image === _post.image_url) {
       postDB
         .doc(post_id)
@@ -129,14 +124,12 @@ const editPostFB = (post_id = null, post = {}) => {
           dispatch(editPost(post_id, { ...post }));
           history.replace("/");
         });
-
       return;
     } else {
       const user_id = getState().user.user.uid;
       const _upload = storage
         .ref(`images/${user_id}_${new Date().getTime()}`)
         .putString(_image, "data_url");
-
       _upload.then((snapshot) => {
         snapshot.ref
           .getDownloadURL()
@@ -156,7 +149,7 @@ const editPostFB = (post_id = null, post = {}) => {
           })
           .catch((err) => {
             window.alert("앗! 이미지 업로드에 문제가 있어요!");
-            console.log("앗! 이미지 업로드에 문제가 있어요!", err);
+            console.log("이미지 업로드에 문제가 있어요!", err);
           });
       });
     }
@@ -174,8 +167,9 @@ const addPostFB = (contents) => {
       .putString(_image, 'data_url');
     const user_info = {
       user_name: _user.displayName,
+      user_profile: _user.photoURL,
       user_uid: _user.uid,
-      email: _user.email,
+      user_email: _user.email,
     }
     _upload
       .then((snapshot) => {

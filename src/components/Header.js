@@ -39,7 +39,12 @@ const Header = (props) => {
                         <Text margin="0px" size="24px" color="white" bold>꼬스타</Text>
                     </Grid>
                     <Grid is_flex row justify="flex-end" position="relative">
-                        <Button containerStyle={GrayButton} text="내 정보" />
+                        <Button
+                            containerStyle={GrayButton}
+                            text="내 정보"
+                            _onClick={() => {
+                                history.push('/mypage')
+                            }} />
                         <NotiBadge>
                             <Button
                                 containerStyle={GrayButton}

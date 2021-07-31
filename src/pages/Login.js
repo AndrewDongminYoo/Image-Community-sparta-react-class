@@ -52,7 +52,7 @@ const Login = (Route) => {
         <title>꼬리스타그램 로그인</title>
         <meta property="og:title" content="꼬리스타그램 로그인" />
         <meta property="og:description" content="댕냥스타그램은 얼마든지 가입 환영입니다:D" />
-        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1627447658522?alt=media" />
+        <meta property="og:image" content="https://via.placeholder.com/400/fff/fff.png" />
       </Helmet>
       <Container>
         <Text size="32px" bold>로그인</Text>
