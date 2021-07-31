@@ -2,14 +2,21 @@ import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placeholder, isPassword, maxLength, returnKeyType, isFileUpload, disable }) => {
+const Input = ({ id, numberOfLines, label, value, _onChange, _onSubmit, placeholder, isPassword, maxLength, returnKeyType, isFileUpload, disable, isProfile, src, size }) => {
 
   const [isFocused, setIsFocused] = useState(false);
   const fileRef = useRef();
   const is_uploading = useSelector((state) => state.image.is_uploading)
 
   // file-input
-  if (isFileUpload) {
+  if (isProfile) {
+    return (
+      <React.Fragment>
+        <ImageLabel src={src} size={100} accept="image/*" htmlFor="file-input" disabled={is_uploading || disable} />
+        <FilePick ref={fileRef} onChange={_onChange} type="file" id="file-input" disabled={is_uploading || disable} />
+      </React.Fragment>
+    )
+  } if (isFileUpload) {
     return (
       <Container>
         <FileLabel accept="image/*" htmlFor="file-input" disabled={is_uploading || disable}>{label}</FileLabel>
@@ -122,6 +129,17 @@ const FileLabel = styled.label`
   color: white;
   text-align: center;
   line-height: 30px;
+`;
+
+const ImageLabel = styled.label`
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
+  border-radius: ${(props) => props.size}px;
+  background-image: url("${(props) => props.src}");
+  background-color: #FFFFE0;
+  background-size: cover;
+  margin: 20px auto;
+  display: block;
 `;
 
 const FilePick = styled.input`

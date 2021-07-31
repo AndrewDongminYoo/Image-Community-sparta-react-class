@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Text, Input, Button } from "../elements";
 import { useDispatch } from 'react-redux';
-import { actionCreators as userActions }  from '../redux/modules/user'
+import { actionCreators as userActions } from '../redux/modules/user'
+import { Helmet } from "react-helmet";
 
 const Container = styled.form`
   flex-direction: column;
@@ -47,6 +48,12 @@ const Login = (Route) => {
 
   return (
     <React.Fragment>
+      <Helmet>
+        <title>꼬리스타그램 로그인</title>
+        <meta property="og:title" content="꼬리스타그램 로그인" />
+        <meta property="og:description" content="댕냥스타그램은 얼마든지 가입 환영입니다:D" />
+        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1627447658522?alt=media" />
+      </Helmet>
       <Container>
         <Text size="32px" bold>로그인</Text>
         <Input
@@ -66,12 +73,14 @@ const Login = (Route) => {
           returnKeyType="done"
           isPassword
           _onSubmit={() => {
-            handleLoginPress()}}
+            handleLoginPress()
+          }}
         />
-        <ErrorText>{ errorMessage }</ErrorText>
+        <ErrorText>{errorMessage}</ErrorText>
         <Button
           _onClick={() => {
-            handleLoginPress()}}
+            handleLoginPress()
+          }}
           text="로그인하기"
         />
       </Container>

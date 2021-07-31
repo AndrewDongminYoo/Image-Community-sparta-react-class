@@ -32,11 +32,11 @@ const Header = (props) => {
     return is_login && is_session
         ? (
             <React.Fragment>
-                <Grid is_flex padding="8px 16px" row>
+                <Grid is_flex padding="8px 16px" row backgroundColor="#2c2c2c">
                     <Grid row _onClick={() => {
                         history.push('/')
                     }}>
-                        <Text margin="0px" size="24px" bold>꼬스타</Text>
+                        <Text margin="0px" size="24px" color="white" bold>꼬스타</Text>
                     </Grid>
                     <Grid is_flex row justify="flex-end" position="relative">
                         <Button containerStyle={GrayButton} text="내 정보" />
@@ -58,11 +58,11 @@ const Header = (props) => {
             </React.Fragment>
         ) : (
             <React.Fragment>
-                <Grid is_flex row padding="8px 16px">
+                <Grid is_flex row padding="8px 16px" backgroundColor="#2c2c2c">
                     <Grid is_flex row _onClick={() => {
                         history.push('/')
                     }}>
-                        <Text margin="0px" size="24px" bold>꼬리스타그램</Text>
+                        <Text margin="0px" size="24px" color="white" bold>꼬리스타그램</Text>
                     </Grid>
                     <Grid is_flex row justify="flex-end">
                         <Button

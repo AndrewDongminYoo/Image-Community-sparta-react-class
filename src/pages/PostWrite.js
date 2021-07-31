@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore'
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, Grid, Image, Button, Input } from "../elements";
 import { actionCreators as postActions } from '../redux/modules/post'
 import { actionCreators as imageActions } from '../redux/modules/image'
-import { useEffect } from 'react';
+import { Helmet } from "react-helmet";
 
 const Container = styled.form`
   flex-direction: column;
@@ -45,7 +45,7 @@ const PostWrite = (props) => {
       window.alert('포스트 데이터가 존재하지 않아요!'); history.goBack(); return;
     } else if (edit_post && find_post) {
       dispatch(imageActions.showPreview(find_post.image_url))
-      if (find_post.comments?.length) {
+      if (find_post.comment_cnt > 1) {
         setDisable(true)
       }
     }
@@ -99,11 +99,17 @@ const PostWrite = (props) => {
     </Grid>
   ) : (
     <React.Fragment>
+      <Helmet>
+        <title>꼬리스타그램 게시물 쓰기</title>
+        <meta property="og:title" content={edit_post ? "꼬리스타그램 게시물 수정하기" : "꼬리스타그램 게시물 작성하기"} />
+        <meta property="og:description" content="당신의 사진에 담긴 이야기를 들려주세요." />
+        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1627447658522?alt=media" />
+      </Helmet>
       <Container>
         <Text size="32px" bold>{edit_post ? "수정하기" : "작성하기"}</Text>
         <Grid>
           <Image shape="rectangle" src={preview ? preview : "http://via.placeholder.com/400/eee/eee"} />
-          <Input _onChange={selectFile} isFileUpload label="이 버튼을 눌러 일상을 공유하세요." disable={disable} />
+          <Input _onChange={selectFile} isFileUpload label={disable ? "댓글이 존재하는 사진은 수정할 수 없어요!" : "이 버튼을 눌러 일상을 공유하세요."} disable={disable} />
         </Grid>
         <Input
           numberOfLines={5}

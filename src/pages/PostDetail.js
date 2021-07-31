@@ -4,9 +4,9 @@ import Permit from '../shared/Permit';
 import { CommentList, CommentWrite, Post } from '../components'
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as postActions } from '../redux/modules/post'
+import { Helmet } from "react-helmet";
 
-
-const PostDetail = (props) => {
+const PostDetail = React.memo((props) => {
 
   const { match, history } = props;
   const dispatch = useDispatch()
@@ -31,6 +31,12 @@ const PostDetail = (props) => {
 
   return (
     <React.Fragment>
+      <Helmet>
+        <title>{post ? post.user_info.user_name + " 님의 게시물" : "꼬리스타그램"}</title>
+        <meta property="og:title" content={post ? post.user_info.user_name + " 님의 게시물" : "꼬리스타그램"} />
+        <meta property="og:description" content={post ? post.contents : "꼬리스타그램"} />
+        <meta property="og:image" content={post ? post.image_url : null} />
+      </Helmet>
       <Grid >
         <Post {...props} {...post} editable={post?.user_info.user_uid === user_info?.uid} />
         <CommentList post_id={post_id} {...props} {...post} />
@@ -40,6 +46,6 @@ const PostDetail = (props) => {
       </Grid>
     </React.Fragment>
   )
-}
+})
 
 export default PostDetail;

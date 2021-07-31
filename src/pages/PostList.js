@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Post from '../components/Post'
 import { actionCreators as postActions } from '../redux/modules/post'
 import FlatList from '../shared/FlatList';
+import { Helmet } from "react-helmet";
 
-const PostList = (props) => {
+const PostList = React.memo((props) => {
 
   const dispatch = useDispatch();
   const post_list = useSelector((state) => state.post.list);
@@ -21,6 +22,12 @@ const PostList = (props) => {
 
   return (
     <React.Fragment>
+      <Helmet>
+        <title>꼬리스타그램 뉴스피드</title>
+        <meta property="og:title" content="꼬리스타그램 뉴스피드" />
+        <meta property="og:description" content="당신의 반려동물 그들의 인생사진을 보여주세요." />
+        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/my-community-99787.appspot.com/o/images%2FTD74SJjIRSbNh4jKLQ3vmOljWuj2%2F1627447658522?alt=media" />
+      </Helmet>
       <FlatList
         callNext={() => {
           if (loading) return;
@@ -38,6 +45,6 @@ const PostList = (props) => {
       />
     </React.Fragment>
   )
-}
+})
 
 export default PostList;

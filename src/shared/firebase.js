@@ -19,11 +19,11 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+const analytics = firebase.analytics();
 const realtime = firebase.database();
 const auth = firebase.auth();
 const firestore = firebase.firestore()
 const storage = firebase.storage()
 const apiKey = firebaseConfig.apiKey;
 
-export { auth, apiKey, firestore, storage, realtime, firebase };
+export { auth, apiKey, firestore, storage, realtime, analytics, firebase };
