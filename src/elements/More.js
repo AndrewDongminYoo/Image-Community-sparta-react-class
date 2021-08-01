@@ -2,13 +2,10 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { history } from '../redux/configureStore'
-import { actionCreators as postActions } from '../redux/modules/post';
-
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 export default function LongMenu(props) {
-  const { _onClick, _onDelete } = props;
+  const { _onShare, _onEdit, _onDelete } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -28,7 +25,7 @@ export default function LongMenu(props) {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreHorizIcon />
+        <MoreVertIcon />
       </IconButton>
       <Menu
         id="simple-menu"
@@ -51,7 +48,7 @@ export default function LongMenu(props) {
           }}
           disableGutters
           dense
-          onClick={() => _onClick()}>
+          onClick={() => _onEdit()}>
           수정하기
         </MenuItem>
         <MenuItem
@@ -60,7 +57,7 @@ export default function LongMenu(props) {
           }}
           disableGutters
           dense
-          onClick={() => _onClick()}>
+          onClick={() => _onShare()}>
           공유하기
         </MenuItem>
         <MenuItem

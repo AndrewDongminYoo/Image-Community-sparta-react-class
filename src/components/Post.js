@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Image, Text, IconButton, More } from '../elements';
-import { HeartOutlined, EditFilled, HeartFilled } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import moment from 'moment'; import 'moment/locale/ko';
 import { history } from '../redux/configureStore';
 import { useDispatch } from 'react-redux';
 import { actionCreators as postActions } from '../redux/modules/post';
+import { realtime } from '../shared/Firebase';
 
 
 const getDateOrTime = ts => {
@@ -17,6 +18,15 @@ const Post = props => {
   const { comment_cnt, contents, editable, id, image_url, insert_dt, user_info } = props
   const [likedPost, SetLikedPost] = useState(false);
 
+  useEffect(() => {
+    const likeDB = realtime.ref(`like/${id}`)
+    likeDB.on("value", (snapshot) => {
+      if (!snapshot.val()) return;
+      console.log(snapshot.val().like)
+    })
+    return () => likeDB.off();
+  }, [id])
+
   return (
     <React.Fragment>
       <Grid>
@@ -26,19 +36,18 @@ const Post = props => {
           <Text right>{getDateOrTime(insert_dt)}</Text>
           {editable
             ? <More
-              _onClick={() => {
+              _onEdit={() => {
                 history.push(`/write/${id}`)
               }}
+              _onShare={() => { }}
               _onDelete={() => {
                 dispatch(postActions.deletePostFB(id))
               }}
             />
-            : <IconButton
-              Filled={EditFilled}
-              isFilled={true}
-              _onClick={() => {
-                history.push(`/write/${id}`)
-              }}
+            : <More
+              _onEdit={() => { }}
+              _onShare={() => { }}
+              _onDelete={() => { }}
             />}
         </Grid>
         <Grid padding="0px 12px">
