@@ -41,15 +41,21 @@ const Signup = (Route) => {
       const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
       return (!!email && regex.test(email));
     }
+    const checkName = (name) => {
+      const regex = /^[a-z0-9._]+$/
+      return (!!name && regex.test(name));
+    }
 
     if (!(email && password && rePassword && nickName && profile)) {
-      setErrorMessage("모든 값을 입력해주세요.");
+      setErrorMessage("모든 값을 입력해주세요. (사진 포함)");
     } else if (password.length < 8 && password.length > 14) {
       setErrorMessage("비밀번호는 8자 이상 14자 이하여야 합니다.")
     } else if (!(checkEmail(email))) {
       setErrorMessage("이메일 형식이 올바르지 않습니다.")
     } else if (email.length < 12 && email.length > 32) {
       setErrorMessage("이메일 길이를 확인해주세요.")
+    } else if (!(checkName(nickName))) {
+      setErrorMessage("숫자와 영소문자 특수문자 . _ 만 포함할 수 있습니다.")
     } else if (password !== rePassword) {
       setErrorMessage("비밀번호 체크를 확인해주세요.")
     } else {
@@ -74,7 +80,7 @@ const Signup = (Route) => {
     <React.Fragment>
       <Container>
         <Text size="32px" bold>회원가입</Text>
-        <Input isProfile src={profile} _onChange={(e) => selectFile(e)} />
+        <Input isProfile src={profile ? profile : "https://webgradients.com/public/webgradients_png/008%20Rainy%20Ashville.png"} _onChange={(e) => selectFile(e)} />
         <Input
           label="이메일"
           value={email}
@@ -86,7 +92,7 @@ const Signup = (Route) => {
           label="닉네임"
           value={nickName}
           _onChange={(e) => setNickname(e.target.value)}
-          placeholder="닉네임을 입력하세요."
+          placeholder="닉네임을 입력하세요. (영소문자+숫자+.+_)"
           returnKeyType="next"
         />
         <Input

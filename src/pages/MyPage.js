@@ -23,7 +23,18 @@ const MyPage = (Route) => {
   const dispatch = useDispatch()
 
   const MyPageEditButtonPress = async () => {
-    await dispatch(userActions.updateUserFB(nickName, profile))
+    const checkName = (name) => {
+      const regex = /^[a-z0-9._]+$/
+      return (!!name && regex.test(name));
+    }
+
+    if (!(emailAddress && nickName && profile)) {
+      window.alert("모든 값을 입력해주세요. (사진 포함)");
+    } else if (!(checkName(nickName))) {
+      window.alert("아이디는 숫자와 영소문자 특수문자 . _ 만 포함할 수 있습니다.")
+    } else {
+      await dispatch(userActions.updateUserFB(nickName, profile))
+    }
   }
 
   const selectFile = (e) => {

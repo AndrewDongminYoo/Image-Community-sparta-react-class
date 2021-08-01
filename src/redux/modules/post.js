@@ -72,6 +72,7 @@ const getPostFB = (start = null, size = 3) => {
             contents: _post.contents,
             insert_dt: _post.insert_dt,
             image_url: _post.image_url,
+            comment_cnt: _post.comment_cnt,
           }
           post_list.push(post)
         })
@@ -88,24 +89,23 @@ const getOnePostFB = (post_id) => {
     const postDB = firestore.collection("post");
     postDB.doc(post_id).get().then(doc => {
       let _post = doc.data();
-      let post = Object.keys(_post).reduce(
-        (acc, cur) => {
-          if (cur.indexOf("user_") !== -1) {
-            return {
-              ...acc,
-              user_info: { ...acc.user_info, [cur]: _post[cur] },
-            };
-          }
-          return { ...acc, [cur]: _post[cur] };
+      const post = {
+        id: _post.id,
+        user_info: {
+          user_name: _post.user_name,
+          user_profile: _post.user_profile,
+          user_uid: _post.user_uid,
         },
-        { id: doc.id, user_info: {} }
-      );
+        contents: _post.contents,
+        insert_dt: _post.insert_dt,
+        image_url: _post.image_url,
+        comment_cnt: _post.comment_cnt,
+      }
       dispatch(setPost([post]));
     })
   }
 }
 
-// eslint-disable-next-line
 const editPostFB = (post_id = null, post = {}) => {
   return function (dispatch, getState, { history }) {
     if (!post_id) {
@@ -134,11 +134,6 @@ const editPostFB = (post_id = null, post = {}) => {
         snapshot.ref
           .getDownloadURL()
           .then((url) => {
-            console.log(url);
-
-            return url;
-          })
-          .then((url) => {
             postDB
               .doc(post_id)
               .update({ ...post, image_url: url })
@@ -153,6 +148,28 @@ const editPostFB = (post_id = null, post = {}) => {
           });
       });
     }
+  };
+};
+
+const deletePostFB = (post_id = null) => {
+  return function (dispatch, getState, { history }) {
+    if (!post_id) {
+      console.log("게시물 정보가 없어요!");
+      return;
+    }
+    const _post_idx = getState().post.list.findIndex((p) => p.id === post_id);
+    const _post = getState().post.list[_post_idx];
+    const user = getState().user.user
+    const postDB = firestore.collection("post");
+    if (user.uid === _post.user_uid) {
+      postDB
+        .doc(post_id)
+        .delete()
+        .then(() => {
+          dispatch(delPost(post_id));
+        })
+    } else return;
+    history.replace('/')
   };
 };
 
@@ -237,7 +254,8 @@ export default handleActions(
       }),
     [DEL_POST]: (state, action) =>
       produce(state, (draft) => {
-
+        let idx = draft.list.findIndex((p) => p.id === action.payload.post_id);
+        draft.list.splice(idx, 1)
       }),
     [ISLOADING]: (state, action) =>
       produce(state, (draft) => {
@@ -251,7 +269,7 @@ export default handleActions(
 const actionCreators = {
   addPost,
   setPost,
-  delPost,
+  deletePostFB,
   editPost,
   getPostFB,
   getOnePostFB,

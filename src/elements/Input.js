@@ -123,8 +123,7 @@ const FileLabel = styled.label`
   width: 100%;
   height: 30px;
   opacity: 0.6;
-  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
-  box-shadow: 0 3px 5px 2px rgba(255, 105, 135, .3);
+  background: linear-gradient(to right, #16222A 0%, #3A6073 51%, #16222A 100%);
   border-radius: 4px;
   color: white;
   text-align: center;
@@ -135,8 +134,8 @@ const ImageLabel = styled.label`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   border-radius: ${(props) => props.size}px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   background-image: url("${(props) => props.src}");
-  background-color: #FFFFE0;
   background-size: cover;
   margin: 20px auto;
   display: block;

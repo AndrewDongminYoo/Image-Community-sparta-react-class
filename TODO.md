@@ -1,6 +1,7 @@
 ### src/pages/
+ - MyPage와 Signup 페이지에서 닉네임 Validation => clear
  - MyPage.js 구현하기 (email, displayName, profile) => clear!!
- - PostList에서 댓글 수 미리 로드하기
+ - PostList에서 댓글 수 미리 로드하기 => clear!
 ### src/components/
  - Header UI 이쁘게
  - Post 수정하기/삭제하기/공유하기
@@ -15,6 +16,7 @@
  - post.js 게시물 공유 기능 만들기
  - post.js 게시물 좋아요 기능 만들기
  - comment.js 내 게시물에 내가 댓글 달면 알람X
+ - comment.js 댓글도 삭제 기능 만들기 (수정 기능 안 만들거임)
 ### etc.
  - 도메인 달기
  - 메타태그 점검 및 에러 핸들 점검

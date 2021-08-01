@@ -1,11 +1,11 @@
-import React from 'react';
-import { Grid, Image, Text } from '../elements';
+import React, { useState } from 'react';
+import { Grid, Image, Text, IconButton, More } from '../elements';
 import { HeartOutlined, EditFilled, HeartFilled } from '@ant-design/icons';
-import moment from 'moment';
-import 'moment/locale/ko';
+import moment from 'moment'; import 'moment/locale/ko';
 import { history } from '../redux/configureStore';
-import IconButton from '../elements/IconButton';
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { actionCreators as postActions } from '../redux/modules/post';
+
 
 const getDateOrTime = ts => {
   return moment.unix(ts.seconds).fromNow();
@@ -13,6 +13,7 @@ const getDateOrTime = ts => {
 
 const Post = props => {
 
+  const dispatch = useDispatch();
   const { comment_cnt, contents, editable, id, image_url, insert_dt, user_info } = props
   const [likedPost, SetLikedPost] = useState(false);
 
@@ -24,14 +25,21 @@ const Post = props => {
           <Text bold>{user_info?.user_name}</Text>
           <Text right>{getDateOrTime(insert_dt)}</Text>
           {editable
-            ? <IconButton
+            ? <More
+              _onClick={() => {
+                history.push(`/write/${id}`)
+              }}
+              _onDelete={() => {
+                dispatch(postActions.deletePostFB(id))
+              }}
+            />
+            : <IconButton
               Filled={EditFilled}
               isFilled={true}
               _onClick={() => {
                 history.push(`/write/${id}`)
               }}
-            />
-            : null}
+            />}
         </Grid>
         <Grid padding="0px 12px">
           <Text>{contents}</Text>
